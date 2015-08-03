@@ -8,4 +8,4 @@ class TestGameSetting(unittest.TestCase):
     game_setting = game_setting.GameSetting()
     start_resources = game_setting.GetStartResources()
     expected_resources = game.game_start_config.GAME_START_RESOURCES_PILES
-    self.assertTrue(start_resources, expected_resources)
+    self.assertEqual(start_resources, expected_resources)
