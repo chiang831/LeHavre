@@ -1,6 +1,6 @@
 #!/python
-import unittest
 import resource
+import unittest
 
 class TestResource(unittest.TestCase):
   def _InitResource(self, **kwargs):
@@ -45,3 +45,6 @@ class TestResource(unittest.TestCase):
   def testGetHides(self):
     self._InitResource(hides=1) 
     self.assertEqual(self._res.GetHides(), 1)
+
+if __name__ == '__main__':
+  unittest.main()
