@@ -1,11 +1,15 @@
 #!/python
 import unittest
+
+import config
 import game_setting
-import game_start_config
 
 class TestGameSetting(unittest.TestCase):
-  def testGameSettingStart(self):
-    game_setting = game_setting.GameSetting()
-    start_resources = game_setting.GetStartResources()
-    expected_resources = game.game_start_config.GAME_START_RESOURCES_PILES
+  def testGameSettingStartResourcePilesDict(self):
+    game_setting_obj = game_setting.GameSetting()
+    start_resources = game_setting_obj.GetStartResourcesPilesDict()
+    expected_resources = config.START_RESOURCES_PILES
     self.assertEqual(start_resources, expected_resources)
+
+if __name__ == '__main__':
+  unittest.main()
