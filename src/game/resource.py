@@ -12,6 +12,18 @@ class Resource(object):
     self._resource_dict['coal'] = Coal(coal)
     self._resource_dict['hides'] = Hides(hides)
 
+  def Equal(self, other):
+    return (self.GetNonZeroResourceNumberDict() == 
+            other.GetNonZeroResourceNumberDict())
+
+  def GetNonZeroResourceNumberDict(self):
+    ret = dict()
+    for key, value in self._resource_dict.iteritems():
+      number = self._GetResourceNumber(key)
+      if number:
+        ret[key] = number     
+    return ret
+
   def _GetResourceNumber(self, name):
     return self._resource_dict[name]._number
 
@@ -41,6 +53,10 @@ class Resource(object):
 
   def GetHides(self):
     return self._GetResourceNumber('hides')
+
+
+def CreateResourceFromDict(resource_dict):
+  return Resource(**resource_dict)
 
 
 class BasicResourceType(object):

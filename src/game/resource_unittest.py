@@ -6,9 +6,26 @@ class TestResource(unittest.TestCase):
   def _InitResource(self, **kwargs):
     self._res = resource.Resource(**kwargs)
 
+  def testCreateResourceFromDict(self):
+    test_dict = dict(franc=1, wood=2)
+    self._res = resource.CreateResourceFromDict(test_dict)
+    self.assertEqual(self._res.GetFranc(), test_dict['franc'])
+    self.assertEqual(self._res.GetWood(), test_dict['wood'])
+
   def testResourceInit(self):
     self._InitResource()
     self.assertTrue(self._res)
+
+  def testGetNonZeroResourceNumberDict(self):
+    test_dict = dict(franc=1, wood=2)
+    self._InitResource(**test_dict)
+    self.assertEqual(self._res.GetNonZeroResourceNumberDict(), test_dict)
+
+  def testEqual(self):
+    test_dict = dict(franc=1, wood=2)
+    self._InitResource(**test_dict)
+    res_other = resource.Resource(**test_dict)
+    self.assertTrue(self._res.Equal(res_other))
 
   def testGetFranc(self):
     self._InitResource(franc=1) 
