@@ -1,3 +1,6 @@
+class ResourceError(Exception):
+  pass
+
 class Resource(object):
   def __init__(self, franc=0, fish=0, wood=0, clay=0, iron=0, 
                grain=0, cattle=0, coal=0, hides=0):
@@ -15,6 +18,13 @@ class Resource(object):
   def Equal(self, other):
     return (self.GetNonZeroResourceNumberDict() == 
             other.GetNonZeroResourceNumberDict())
+
+  def Add(self, other):
+    for key, value in other.GetNonZeroResourceNumberDict().iteritems():
+      if value < 0:
+        raise ResourceError('Can not add a negative %d for key %s',
+            value, key)
+      self._resource_dict[key].Add(value)
 
   def GetNonZeroResourceNumberDict(self):
     ret = dict()
@@ -65,6 +75,9 @@ class BasicResourceType(object):
  
   def GetNumber(self):
     return self._number 
+
+  def Add(self, number):
+    self._number = self._number + number
 
 
 class Franc(BasicResourceType):

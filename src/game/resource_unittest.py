@@ -27,6 +27,26 @@ class TestResource(unittest.TestCase):
     res_other = resource.Resource(**test_dict)
     self.assertTrue(self._res.Equal(res_other))
 
+  def testAdd(self):
+    dict_1 = dict(franc=1, wood=2)
+    dict_2 = dict(franc=1, clay=3)
+    dict_sum = dict(franc=2, wood=2, clay=3)
+    res_1 = resource.Resource(**dict_1)
+    res_2 = resource.Resource(**dict_2)
+    res_sum = resource.Resource(**dict_sum)
+
+    res_1.Add(res_2)
+    self.assertTrue(res_sum.Equal(res_1))
+
+  def testAddNegativeResource(self):
+    dict_1 = dict(franc=1, wood=2)
+    dict_2 = dict(franc=1, clay=-3)
+    res_1 = resource.Resource(**dict_1)
+    res_2 = resource.Resource(**dict_2)
+
+    with self.assertRaises(resource.ResourceError):
+      res_1.Add(res_2)
+
   def testGetFranc(self):
     self._InitResource(franc=1) 
     self.assertEqual(self._res.GetFranc(), 1)
