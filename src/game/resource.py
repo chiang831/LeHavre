@@ -44,10 +44,6 @@ class Resource(object):
     self._resource_dict[name]._number = 0
 
 
-def CreateResourceFromDict(resource_dict):
-  return Resource(**resource_dict)
-
-
 class BasicResourceType(object):
   def __init__(self, number):
     self._number = number
@@ -111,3 +107,9 @@ class Hides(BasicResourceType):
   name = 'Hides' 
   def __init__(self, number):
     super(Hides, self).__init__(number)
+
+
+def CreateResourceFromDict(resource_dict):
+  return Resource(**resource_dict)
+
+
