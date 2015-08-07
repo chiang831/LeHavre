@@ -47,6 +47,13 @@ class TestResource(unittest.TestCase):
     with self.assertRaises(resource.ResourceError):
       res_1.Add(res_2)
 
+  def testCopy(self):
+    dict_1 = dict(franc=1, wood=2)
+    res_1 = resource.Resource(**dict_1)
+    res_2 = res_1.Copy()
+    self.assertTrue(res_1.Equal(res_2))
+    self.assertNotEqual(res_1, res_2)
+
   def testGetFranc(self):
     self._InitResource(franc=1) 
     self.assertEqual(self._res.GetFranc(), 1)

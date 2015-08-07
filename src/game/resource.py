@@ -26,6 +26,9 @@ class Resource(object):
             value, key)
       self._resource_dict[key].Add(value)
 
+  def Copy(self):
+    return CreateResourceFromDict(self.GetNonZeroResourceNumberDict())
+
   def GetNonZeroResourceNumberDict(self):
     ret = dict()
     for key, value in self._resource_dict.iteritems():
