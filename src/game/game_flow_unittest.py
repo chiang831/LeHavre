@@ -6,13 +6,15 @@ import game_setting
 import resource
 
 class TestGameFlow(unittest.TestCase):
-  def testGameFlowStartingResourcePile(self):
+  def setUp(self):
     setting = game_setting.GameSetting()
-    flow = game_flow.CreateGameFlow(setting) 
+    self._flow = game_flow.CreateGameFlow(setting) 
+
+  def testGameFlowStartingResourcePile(self):
     expected_resource_pile = resource.CreateResourceFromDict(
         config.START_RESOURCES_PILES)
     self.assertTrue(
-        flow.GetResourcePile().Equal(expected_resource_pile))
+        self._flow.GetResourcePile().Equal(expected_resource_pile))
 
 if __name__ == '__main__':
   unittest.main()
