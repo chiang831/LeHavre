@@ -90,5 +90,40 @@ class TestResource(unittest.TestCase):
     self._InitResource(hides=1) 
     self.assertEqual(self._res.GetHides(), 1)
 
+  def testClearFranc(self):
+    self._InitResource(franc=1) 
+    self._res.ClearFranc()
+    self.assertEqual(self._res.GetFranc(), 0)
+
+  def testClearFish(self):
+    self._InitResource(fish=1) 
+    self._res.ClearFish()
+    self.assertEqual(self._res.GetFish(), 0)
+
+  def testClearWood(self):
+    self._InitResource(wood=1) 
+    self._res.ClearWood()
+    self.assertEqual(self._res.GetWood(), 0)
+
+  def testClearClay(self):
+    self._InitResource(clay=1) 
+    self._res.ClearClay()
+    self.assertEqual(self._res.GetClay(), 0)
+
+  def testClearIron(self):
+    self._InitResource(iron=1) 
+    self._res.ClearIron()
+    self.assertEqual(self._res.GetIron(), 0)
+
+  def testClearGrain(self):
+    self._InitResource(grain=1) 
+    self._res.ClearGrain()
+    self.assertEqual(self._res.GetGrain(), 0)
+
+  def testClearCattle(self):
+    self._InitResource(cattle=1) 
+    self._res.ClearCattle()
+    self.assertEqual(self._res.GetCattle(), 0)
+
 if __name__ == '__main__':
   unittest.main()
