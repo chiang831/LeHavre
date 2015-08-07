@@ -9,8 +9,8 @@ class TestResource(unittest.TestCase):
   def testCreateResourceFromDict(self):
     test_dict = dict(franc=1, wood=2)
     self._res = resource.CreateResourceFromDict(test_dict)
-    self.assertEqual(self._res.GetFranc(), test_dict['franc'])
-    self.assertEqual(self._res.GetWood(), test_dict['wood'])
+    self.assertEqual(self._res.GetResourceByName('franc'), test_dict['franc'])
+    self.assertEqual(self._res.GetResourceByName('wood'), test_dict['wood'])
 
   def testResourceInit(self):
     self._InitResource()
@@ -54,76 +54,93 @@ class TestResource(unittest.TestCase):
     self.assertTrue(res_1.Equal(res_2))
     self.assertNotEqual(res_1, res_2)
 
+
+class TestGetResource(unittest.TestCase):
+  def setUp(self):
+    self._name = None
+    self._value = 1
+
+  def _InitResource(self):
+    self._res = resource.CreateResourceFromDict(
+        {self._name: self._value})
+
+  def _TestGetResource(self):
+    self._InitResource()
+    self.assertEqual(
+        self._res.GetResourceByName(self._name),
+        self._value)
+
   def testGetFranc(self):
-    self._InitResource(franc=1) 
-    self.assertEqual(self._res.GetFranc(), 1)
+    self._name = 'franc'
+    self._TestGetResource()
 
   def testGetFish(self):
-    self._InitResource(fish=1) 
-    self.assertEqual(self._res.GetFish(), 1)
+    self._name = 'fish'
+    self._TestGetResource()
 
   def testGetWood(self):
-    self._InitResource(wood=1) 
-    self.assertEqual(self._res.GetWood(), 1)
+    self._name = 'wood'
+    self._TestGetResource()
 
   def testGetClay(self):
-    self._InitResource(clay=1) 
-    self.assertEqual(self._res.GetClay(), 1)
+    self._name = 'clay'
+    self._TestGetResource()
 
   def testGetIron(self):
-    self._InitResource(iron=1) 
-    self.assertEqual(self._res.GetIron(), 1)
+    self._name = 'iron'
+    self._TestGetResource()
 
   def testGetGrain(self):
-    self._InitResource(grain=1) 
-    self.assertEqual(self._res.GetGrain(), 1)
+    self._name = 'grain'
+    self._TestGetResource()
 
   def testGetCattle(self):
-    self._InitResource(cattle=1) 
-    self.assertEqual(self._res.GetCattle(), 1)
+    self._name = 'cattle'
+    self._TestGetResource()
 
   def testGetCoal(self):
-    self._InitResource(coal=1) 
-    self.assertEqual(self._res.GetCoal(), 1)
+    self._name = 'coal'
+    self._TestGetResource()
 
   def testGetHides(self):
-    self._InitResource(hides=1) 
-    self.assertEqual(self._res.GetHides(), 1)
+    self._name = 'hides'
+    self._TestGetResource()
+
+  def _TestClearResource(self):
+    self._InitResource()
+    self._res.ClearResourceByName(self._name)
+    self.assertEqual(
+        self._res.GetResourceByName(self._name),
+        0)
 
   def testClearFranc(self):
-    self._InitResource(franc=1) 
-    self._res.ClearFranc()
-    self.assertEqual(self._res.GetFranc(), 0)
-
-  def testClearFish(self):
-    self._InitResource(fish=1) 
-    self._res.ClearFish()
-    self.assertEqual(self._res.GetFish(), 0)
+    self._name = 'franc'
+    self._TestClearResource()
 
   def testClearWood(self):
-    self._InitResource(wood=1) 
-    self._res.ClearWood()
-    self.assertEqual(self._res.GetWood(), 0)
+    self._name = 'wood'
+    self._TestClearResource()
 
   def testClearClay(self):
-    self._InitResource(clay=1) 
-    self._res.ClearClay()
-    self.assertEqual(self._res.GetClay(), 0)
+    self._name = 'clay'
+    self._TestClearResource()
+
+  def testClearFish(self):
+    self._name = 'fish'
+    self._TestClearResource()
 
   def testClearIron(self):
-    self._InitResource(iron=1) 
-    self._res.ClearIron()
-    self.assertEqual(self._res.GetIron(), 0)
+    self._name = 'iron'
+    self._TestClearResource()
 
   def testClearGrain(self):
-    self._InitResource(grain=1) 
-    self._res.ClearGrain()
-    self.assertEqual(self._res.GetGrain(), 0)
+    self._name = 'grain'
+    self._TestClearResource()
 
   def testClearCattle(self):
-    self._InitResource(cattle=1) 
-    self._res.ClearCattle()
-    self.assertEqual(self._res.GetCattle(), 0)
+    self._name = 'cattle'
+    self._TestClearResource()
+
 
 if __name__ == '__main__':
   unittest.main()

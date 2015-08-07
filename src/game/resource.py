@@ -32,64 +32,16 @@ class Resource(object):
   def GetNonZeroResourceNumberDict(self):
     ret = dict()
     for key, value in self._resource_dict.iteritems():
-      number = self._GetResourceNumber(key)
+      number = self.GetResourceByName(key)
       if number:
         ret[key] = number     
     return ret
 
-  def _GetResourceNumber(self, name):
+  def GetResourceByName(self, name):
     return self._resource_dict[name]._number
 
-  def _ClearResource(self, name):
+  def ClearResourceByName(self, name):
     self._resource_dict[name]._number = 0
-
-  def GetFranc(self):
-    return self._GetResourceNumber('franc')
-
-  def ClearFranc(self):
-    return self._ClearResource('franc')
-
-  def GetFish(self):
-    return self._GetResourceNumber('fish')
-
-  def ClearFish(self):
-    return self._ClearResource('fish')
-
-  def GetWood(self):
-    return self._GetResourceNumber('wood')
-
-  def ClearWood(self):
-    return self._ClearResource('wood')
-
-  def GetClay(self):
-    return self._GetResourceNumber('clay')
-
-  def ClearClay(self):
-    return self._ClearResource('clay')
-
-  def GetIron(self):
-    return self._GetResourceNumber('iron')
-
-  def ClearIron(self):
-    return self._ClearResource('iron')
-
-  def GetGrain(self):
-    return self._GetResourceNumber('grain')
-
-  def ClearGrain(self):
-    return self._ClearResource('grain')
-
-  def GetCattle(self):
-    return self._GetResourceNumber('cattle')
-
-  def ClearCattle(self):
-    return self._ClearResource('cattle')
-
-  def GetCoal(self):
-    return self._GetResourceNumber('coal')
-
-  def GetHides(self):
-    return self._GetResourceNumber('hides')
 
 
 def CreateResourceFromDict(resource_dict):
