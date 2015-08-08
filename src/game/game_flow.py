@@ -1,4 +1,5 @@
 import game_setting
+import take_resource_action
 import resource
 
 class GameFlow(object):
@@ -37,6 +38,13 @@ class GameFlow(object):
   def NextTurn(self):
     self._turn_index = self._turn_index + 1
 
+  def SetResourcePileForTest(self, res_pile):
+    self._resource_pile = res_pile
+
+  def PlayerTakeResourceAction(self, player_name, res_name):
+    player = self.GetPlayer(player_name)
+    action = take_resource_action.CreateTakeResourceAction(res_name)
+    action.TakeAction(player, self.GetResourcePile())
 
 def CreateGameFlow(setting):
   return GameFlow(setting)

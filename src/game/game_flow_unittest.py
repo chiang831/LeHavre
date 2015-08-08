@@ -65,5 +65,14 @@ class TestGameFlow(unittest.TestCase):
 
       self._flow.NextTurn()
 
+  def testTakeResource(self):
+    res_pile = resource.Resource(franc=1, clay=2)
+    name = 'Player1'
+    p1 = self._CreateAndAddPlayer(name)
+    self._flow.SetResourcePileForTest(res_pile)
+    self._flow.PlayerTakeResourceAction(name, 'franc')
+    self.assertTrue(p1.GetResource().Equal(
+        resource.Resource(franc=1)))
+
 if __name__ == '__main__':
   unittest.main()
