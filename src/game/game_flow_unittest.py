@@ -74,5 +74,14 @@ class TestGameFlow(unittest.TestCase):
     self.assertTrue(p1.GetResource().Equal(
         resource.Resource(franc=1)))
 
+  def testGetCurrentPlayer(self):
+    name1 = 'Player1'
+    name2 = 'Player2'
+    p1 = self._CreateAndAddPlayer(name1)
+    p2 = self._CreateAndAddPlayer(name2)
+    self.assertEqual(self._flow.GetCurrentPlayer(), p1)
+    self._flow.NextTurn()
+    self.assertEqual(self._flow.GetCurrentPlayer(), p2)
+
 if __name__ == '__main__':
   unittest.main()

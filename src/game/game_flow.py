@@ -10,6 +10,7 @@ class GameFlow(object):
     self._players = list()
     self._resource_generators = list()
     self._turn_index = 0
+    self._current_player_index = 0
 
   def GetResourcePile(self):
     return self._resource_pile
@@ -37,6 +38,12 @@ class GameFlow(object):
 
   def NextTurn(self):
     self._turn_index = self._turn_index + 1
+    self._NextPlayer()
+
+  def _NextPlayer(self):
+    self._current_player_index = self._current_player_index + 1
+    if self._current_player_index == len(self._players):
+      self._current_player_index = 0
 
   def SetResourcePileForTest(self, res_pile):
     self._resource_pile = res_pile
@@ -45,6 +52,9 @@ class GameFlow(object):
     player = self.GetPlayer(player_name)
     action = take_resource_action.CreateTakeResourceAction(res_name)
     action.TakeAction(player, self.GetResourcePile())
+
+  def GetCurrentPlayer(self):
+    return self._players[self._current_player_index]
 
 def CreateGameFlow(setting):
   return GameFlow(setting)
