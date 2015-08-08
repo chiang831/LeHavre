@@ -48,8 +48,8 @@ class GameFlow(object):
   def SetResourcePileForTest(self, res_pile):
     self._resource_pile = res_pile
 
-  def PlayerTakeResourceAction(self, player_name, res_name):
-    player = self.GetPlayer(player_name)
+  def PlayerTakeResourceAction(self, res_name):
+    player = self.GetCurrentPlayer()
     action = take_resource_action.CreateTakeResourceAction(res_name)
     action.TakeAction(player, self.GetResourcePile())
 
