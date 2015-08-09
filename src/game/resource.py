@@ -44,7 +44,7 @@ class Resource(object):
     self._resource_dict[name]._number = 0
 
 
-class BasicResourceType(object):
+class BasicResourceElement(object):
   def __init__(self, number):
     self._number = number
  
@@ -55,55 +55,55 @@ class BasicResourceType(object):
     self._number = self._number + number
 
 
-class Franc(BasicResourceType):
+class Franc(BasicResourceElement):
   name = 'Franc'  
   def __init__(self, number):
     super(Franc, self).__init__(number)
 
 
-class Fish(BasicResourceType):
+class Fish(BasicResourceElement):
   name = 'Fish' 
   def __init__(self, number):
     super(Fish, self).__init__(number)
 
 
-class Wood(BasicResourceType):
+class Wood(BasicResourceElement):
   name = 'Wood' 
   def __init__(self, number):
     super(Wood, self).__init__(number)
 
 
-class Clay(BasicResourceType):
+class Clay(BasicResourceElement):
   name = 'Clay' 
   def __init__(self, number):
     super(Clay, self).__init__(number)
 
 
-class Iron(BasicResourceType):
+class Iron(BasicResourceElement):
   name = 'Iron' 
   def __init__(self, number):
     super(Iron, self).__init__(number)
 
 
-class Grain(BasicResourceType):
+class Grain(BasicResourceElement):
   name = 'Grain' 
   def __init__(self, number):
     super(Grain, self).__init__(number)
 
 
-class Cattle(BasicResourceType):
+class Cattle(BasicResourceElement):
   name = 'Cattle' 
   def __init__(self, number):
     super(Cattle, self).__init__(number)
 
 
-class Coal(BasicResourceType):
+class Coal(BasicResourceElement):
   name = 'Coal' 
   def __init__(self, number):
     super(Coal, self).__init__(number)
 
 
-class Hides(BasicResourceType):
+class Hides(BasicResourceElement):
   name = 'Hides' 
   def __init__(self, number):
     super(Hides, self).__init__(number)
