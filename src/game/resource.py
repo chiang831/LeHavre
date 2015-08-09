@@ -73,6 +73,9 @@ class BasicResourceElement(object):
   def GetFoodValue(self):
     return self._unit_food_value * self._number
 
+  def GetUnitFoodValue(self):
+    return self._unit_food_value
+
 
 class Franc(BasicResourceElement):
   name = 'Franc'  

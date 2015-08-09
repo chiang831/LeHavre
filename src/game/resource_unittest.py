@@ -169,5 +169,32 @@ class TestGetFoodValue(unittest.TestCase):
     self.assertEqual(res.GetFoodValue(), 0)
 
 
+class TestBasicResourceElement(unittest.TestCase):
+  def testGetNumber(self):
+    element = resource.Franc(1)
+    self.assertEqual(element.GetNumber(), 1)
+
+  def testAdd(self):
+    element = resource.Franc(1)
+    element.Add(1)
+    self.assertEqual(element.GetNumber(), 2)
+
+  def testGetFoodValueFranc(self):
+    element = resource.Franc(1)
+    self.assertEqual(element.GetFoodValue(), 1)
+
+  def testGetUnitFoodValueFranc(self):
+    element = resource.Franc(0)
+    self.assertEqual(element.GetUnitFoodValue(), 1)
+
+  def testGetFoodValueFish(self):
+    element = resource.Fish(1)
+    self.assertEqual(element.GetFoodValue(), 1)
+
+  def testGetUnitFoodValueFish(self):
+    element = resource.Fish(0)
+    self.assertEqual(element.GetUnitFoodValue(), 1)
+
+
 if __name__ == '__main__':
   unittest.main()
