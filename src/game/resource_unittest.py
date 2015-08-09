@@ -21,6 +21,15 @@ class TestResource(unittest.TestCase):
     self._InitResource(**test_dict)
     self.assertEqual(self._res.GetNonZeroResourceNumberDict(), test_dict)
 
+  def testGetNonZeroResourceElementDict(self):
+    test_dict = dict(franc=1, wood=2)
+    self._InitResource(**test_dict)
+    res_element_dict = self._res.GetNonZeroResourceElementDict()
+    self.assertTrue(isinstance(res_element_dict['franc'], resource.Franc))
+    self.assertEqual(res_element_dict['franc'].GetNumber(), 1)
+    self.assertTrue(isinstance(res_element_dict['wood'], resource.Wood))
+    self.assertEqual(res_element_dict['wood'].GetNumber(), 2)
+
   def testEqual(self):
     test_dict = dict(franc=1, wood=2)
     self._InitResource(**test_dict)

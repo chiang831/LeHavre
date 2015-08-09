@@ -20,9 +20,9 @@ class ResourcePicker(object):
   def _CanPick(self, resource_to_pick):
     total_picked = self._picked_resource.Copy()
     total_picked.Add(resource_to_pick)
-    for key, value in total_picked.GetNonZeroResourceNumberDict().iteritems():
+    for key, elem in total_picked.GetNonZeroResourceElementDict().iteritems():
       available_value = self._available.GetResourceByName(key)
-      if value > available_value:
+      if elem.GetNumber() > available_value:
         return False
     return True
 
