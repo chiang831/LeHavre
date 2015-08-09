@@ -115,6 +115,38 @@ class TestGetResource(unittest.TestCase):
     self._name = 'hides'
     self._TestGetResource()
 
+  def testGetSmokedFish(self):
+    self._name = 'smoked_fish'
+    self._TestGetResource()
+
+  def testGetCharcoal(self):
+    self._name = 'charcoal'
+    self._TestGetResource()
+
+  def testGetBrick(self):
+    self._name = 'brick'
+    self._TestGetResource()
+
+  def testGetSteel(self):
+    self._name = 'steel'
+    self._TestGetResource()
+
+  def testGetBread(self):
+    self._name = 'bread'
+    self._TestGetResource()
+
+  def testGetMeal(self):
+    self._name = 'meal'
+    self._TestGetResource()
+
+  def testGetLeather(self):
+    self._name = 'leather'
+    self._TestGetResource()
+
+  def testGetCoke(self):
+    self._name = 'coke'
+    self._TestGetResource()
+
   def _TestClearResource(self):
     self._InitResource()
     self._res.ClearResourceByName(self._name)
@@ -150,6 +182,38 @@ class TestGetResource(unittest.TestCase):
     self._name = 'cattle'
     self._TestClearResource()
 
+  def testClearSmokedFish(self):
+    self._name = 'smoked_fish'
+    self._TestClearResource()
+
+  def testClearCharcoal(self):
+    self._name = 'charcoal'
+    self._TestClearResource()
+
+  def testClearBrick(self):
+    self._name = 'brick'
+    self._TestClearResource()
+
+  def testClearSteel(self):
+    self._name = 'steel'
+    self._TestClearResource()
+
+  def testClearCoke(self):
+    self._name = 'coke'
+    self._TestClearResource()
+
+  def testClearBread(self):
+    self._name = 'bread'
+    self._TestClearResource()
+
+  def testClearMeal(self):
+    self._name = 'meal'
+    self._TestClearResource()
+
+  def testClearLeather(self):
+    self._name = 'leather'
+    self._TestClearResource()
+
 
 class TestGetFoodValue(unittest.TestCase):
   def testFranc(self):
@@ -167,6 +231,18 @@ class TestGetFoodValue(unittest.TestCase):
   def testNonFood(self):
     res = resource.Resource(wood=1, clay=1, iron=1, grain=1, cattle=1)
     self.assertEqual(res.GetFoodValue(), 0)
+
+  def testSmokedFish(self):
+    res = resource.Resource(smoked_fish=1)
+    self.assertEqual(res.GetFoodValue(), 2) 
+
+  def testBread(self):
+    res = resource.Resource(bread=1)
+    self.assertEqual(res.GetFoodValue(), 2) 
+
+  def testMeal(self):
+    res = resource.Resource(meal=1)
+    self.assertEqual(res.GetFoodValue(), 3) 
 
 
 class TestBasicResourceElement(unittest.TestCase):
