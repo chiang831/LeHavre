@@ -142,5 +142,23 @@ class TestGetResource(unittest.TestCase):
     self._TestClearResource()
 
 
+class TestGetFoodValue(unittest.TestCase):
+  def testFranc(self):
+    res = resource.Resource(franc=1)
+    self.assertEqual(res.GetFoodValue(), 1)
+
+  def testFish(self):
+    res = resource.Resource(fish=1)
+    self.assertEqual(res.GetFoodValue(), 1) 
+
+  def testFrandAndFish(self):
+    res = resource.Resource(franc=1, fish=1)
+    self.assertEqual(res.GetFoodValue(), 2) 
+
+  def testNonFood(self):
+    res = resource.Resource(wood=1, clay=1, iron=1, grain=1, cattle=1)
+    self.assertEqual(res.GetFoodValue(), 0)
+
+
 if __name__ == '__main__':
   unittest.main()

@@ -43,8 +43,16 @@ class Resource(object):
   def ClearResourceByName(self, name):
     self._resource_dict[name]._number = 0
 
+  def GetFoodValue(self):
+    food = 0
+    for res_element in self._resource_dict.values():
+      if res_element.GetNumber():
+        food = food + res_element.GetFoodValue()
+    return food
+
 
 class BasicResourceElement(object):
+  _unit_food_value = 0
   def __init__(self, number):
     self._number = number
  
@@ -54,15 +62,20 @@ class BasicResourceElement(object):
   def Add(self, number):
     self._number = self._number + number
 
+  def GetFoodValue(self):
+    return self._unit_food_value * self._number
+
 
 class Franc(BasicResourceElement):
   name = 'Franc'  
+  _unit_food_value = 1
   def __init__(self, number):
     super(Franc, self).__init__(number)
 
 
 class Fish(BasicResourceElement):
   name = 'Fish' 
+  _unit_food_value = 1
   def __init__(self, number):
     super(Fish, self).__init__(number)
 
