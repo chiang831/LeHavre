@@ -1,0 +1,75 @@
+import food_checker
+import resource
+
+
+class FeederError(Exception):
+  pass
+
+class Feeder(object):
+  def __init__(self):
+    self._resource_picker= None
+    self._player = None
+    self._food_req = None
+    self._food_checker = None
+    self._picked_res = None
+
+  def SetResourcePicker(self, picker):
+    self._resource_picker= picker
+
+  def Feed(self, player, food_requirement, ui=True):
+    self._player = player
+    self._food_req = food_requirement
+    self._food_checker = food_checker.FoodChecker(self._food_req)
+ 
+    if ui:
+      pass
+      # TODO Provide UI so user can pick resources and
+      # store the picked result in resource_picker.
+
+      # Also, handle FeederError in _FeedImpl so it can
+      # let user select again.
+
+    self._picked_res = self._resource_picker.GetPicked()
+    self._FeedImpl()
+     
+  def _FeedImpl(self):
+    try:
+      enough = self._food_checker.Check(self._picked_res)
+    except food_checker.FoodTooMuchError:
+      raise FeederError('Pick too much')
+    except food_checker.NotFoodError:
+      raise FeederError('Pick non food')
+    if enough:
+      self._ApplyTransaction()
+    else:
+      self._CheckReallyCanNotPayMore()
+      self._ApplyTransaction()
+      self._ApplyLoan()
+
+  def _ApplyTransaction(self):
+    self._player.SubtractResource(self._picked_res)
+
+  def _CheckReallyCanNotPayMore(self):
+    test_res = self._player.GetResource().Copy()
+    test_res.Subtract(self._picked_res)
+    if test_res.GetFoodValue():
+      raise FeederError('Can pay more')
+
+  def _GetNeededLoanNumber(self, needed_loan_value):
+    loan_unit_value = resource.Loan.GetFrancValueWhenGetLoan()
+    needed_loan_number = (
+        needed_loan_value / loan_unit_value)
+    if needed_loan_value % loan_unit_value:
+      needed_loan_number = needed_loan_number + 1
+
+    return needed_loan_number
+
+  def _ApplyLoan(self):
+    picked_food_value = self._picked_res.GetFoodValue()
+    needed_loan_value = self._food_req - picked_food_value
+    needed_loan_number = self._GetNeededLoanNumber(needed_loan_value)
+
+    self._player.GetLoan(needed_loan_number)
+    self._player.SubtractResource(
+        resource.Resource(franc=needed_loan_value))
+    print self._player._resource.GetNonZeroResourceNumberDict()
