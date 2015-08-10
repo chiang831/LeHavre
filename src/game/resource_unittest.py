@@ -232,11 +232,11 @@ class TestGetFoodValue(unittest.TestCase):
 
   def testFish(self):
     res = resource.Resource(fish=1)
-    self.assertEqual(res.GetFoodValue(), 1) 
+    self.assertEqual(res.GetFoodValue(), 1)
 
   def testFrandAndFish(self):
     res = resource.Resource(franc=1, fish=1)
-    self.assertEqual(res.GetFoodValue(), 2) 
+    self.assertEqual(res.GetFoodValue(), 2)
 
   def testNonFood(self):
     res = resource.Resource(wood=1, clay=1, iron=1, grain=1, cattle=1)
@@ -244,15 +244,15 @@ class TestGetFoodValue(unittest.TestCase):
 
   def testSmokedFish(self):
     res = resource.Resource(smoked_fish=1)
-    self.assertEqual(res.GetFoodValue(), 2) 
+    self.assertEqual(res.GetFoodValue(), 2)
 
   def testBread(self):
     res = resource.Resource(bread=1)
-    self.assertEqual(res.GetFoodValue(), 2) 
+    self.assertEqual(res.GetFoodValue(), 2)
 
   def testMeal(self):
     res = resource.Resource(meal=1)
-    self.assertEqual(res.GetFoodValue(), 3) 
+    self.assertEqual(res.GetFoodValue(), 3)
 
 
 class TestBasicResourceElement(unittest.TestCase):
