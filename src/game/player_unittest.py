@@ -23,5 +23,18 @@ class TestPlayer(unittest.TestCase):
     self._player.AddResource(resource_2)
     self.assertTrue(resource_sum.Equal(self._player.GetResource()))
 
+  def testSubtract(self):
+    res_dict_1 = dict(franc=2, fish=3)
+    resource_1 = resource.CreateResourceFromDict(res_dict_1)
+    res_dict_2 = dict(franc=1, fish=1)
+    resource_2 = resource.CreateResourceFromDict(res_dict_2)
+    res_dict_sub = dict(franc=1, fish=2)
+    resource_sub = resource.CreateResourceFromDict(res_dict_sub)
+
+    self._player.AddResource(resource_1)
+    self._player.SubtractResource(resource_2)
+    self.assertTrue(resource_sub.Equal(self._player.GetResource()))
+
+
 if __name__ == '__main__':
   unittest.main()

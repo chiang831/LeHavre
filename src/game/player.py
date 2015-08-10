@@ -13,3 +13,7 @@ class Player(object):
 
   def AddResource(self, add_resource):
     self._resource.Add(add_resource)
+
+  def SubtractResource(self, sub_resource):
+    self._resource.Subtract(sub_resource)
+
