@@ -21,7 +21,7 @@ class ResourcePicker(object):
     total_picked = self._picked_resource.Copy()
     total_picked.Add(resource_to_pick)
     for key, elem in total_picked.GetNonZeroResourceElementDict().iteritems():
-      available_value = self._available.GetResourceByName(key)
+      available_value = self._available.GetResourceNumberByName(key)
       if elem.GetNumber() > available_value:
         return False
     return True

@@ -16,8 +16,8 @@ class TestTakeResourceAction(unittest.TestCase):
 
     action.TakeAction(p, resource_pile)
 
-    self.assertEqual(p.GetResource().GetResourceByName(self._res_name), 3)
-    self.assertEqual(resource_pile.GetResourceByName(self._res_name), 0)
+    self.assertEqual(p.GetResource().GetResourceNumberByName(self._res_name), 3)
+    self.assertEqual(resource_pile.GetResourceNumberByName(self._res_name), 0)
 
   def _testTakeInvalidResourceAction(self):
     p= player.Player('Player1')

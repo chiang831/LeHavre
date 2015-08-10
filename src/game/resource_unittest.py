@@ -9,8 +9,10 @@ class TestResource(unittest.TestCase):
   def testCreateResourceFromDict(self):
     test_dict = dict(franc=1, wood=2)
     self._res = resource.CreateResourceFromDict(test_dict)
-    self.assertEqual(self._res.GetResourceByName('franc'), test_dict['franc'])
-    self.assertEqual(self._res.GetResourceByName('wood'), test_dict['wood'])
+    self.assertEqual(
+        self._res.GetResourceNumberByName('franc'), test_dict['franc'])
+    self.assertEqual(
+        self._res.GetResourceNumberByName('wood'), test_dict['wood'])
 
   def testResourceInit(self):
     self._InitResource()
@@ -76,7 +78,7 @@ class TestGetResource(unittest.TestCase):
   def _TestGetResource(self):
     self._InitResource()
     self.assertEqual(
-        self._res.GetResourceByName(self._name),
+        self._res.GetResourceNumberByName(self._name),
         self._value)
 
   def testGetFranc(self):
@@ -151,7 +153,7 @@ class TestGetResource(unittest.TestCase):
     self._InitResource()
     self._res.ClearResourceByName(self._name)
     self.assertEqual(
-        self._res.GetResourceByName(self._name),
+        self._res.GetResourceNumberByName(self._name),
         0)
 
   def testClearFranc(self):

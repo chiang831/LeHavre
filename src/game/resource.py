@@ -42,7 +42,7 @@ class Resource(object):
   def GetNonZeroResourceNumberDict(self):
     ret = dict()
     for key, value in self._resource_dict.iteritems():
-      number = self.GetResourceByName(key)
+      number = self.GetResourceNumberByName(key)
       if number:
         ret[key] = number     
     return ret
@@ -50,13 +50,16 @@ class Resource(object):
   def GetNonZeroResourceElementDict(self):
     ret = dict()
     for key, value in self._resource_dict.iteritems():
-      number = self.GetResourceByName(key)
+      number = self.GetResourceNumberByName(key)
       if number:
         ret[key] = value
     return ret
 
-  def GetResourceByName(self, name):
-    return self._resource_dict[name]._number
+  def _GetResourceByName(self, name):
+    return self._resource_dict[name]
+
+  def GetResourceNumberByName(self, name):
+    return self._GetResourceByName(name).GetNumber()
 
   def ClearResourceByName(self, name):
     self._resource_dict[name]._number = 0
