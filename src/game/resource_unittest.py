@@ -58,6 +58,25 @@ class TestResource(unittest.TestCase):
     with self.assertRaises(resource.ResourceError):
       res_1.Add(res_2)
 
+  def testSubtract(self):
+    dict_1 = dict(franc=3, clay=4)
+    dict_2 = dict(franc=1, clay=3)
+    dict_sub = dict(franc=2, clay=1)
+    res_1 = resource.Resource(**dict_1)
+    res_2 = resource.Resource(**dict_2)
+    res_sub = resource.Resource(**dict_sub)
+
+    res_1.Subtract(res_2)
+    self.assertTrue(res_sub.Equal(res_1))
+
+  def testSubtractInvalid(self):
+    dict_1 = dict(franc=3, clay=3)
+    dict_2 = dict(franc=1, clay=4)
+    res_1 = resource.Resource(**dict_1)
+    res_2 = resource.Resource(**dict_2)
+    with self.assertRaises(resource.SubtractionError):
+      res_1.Subtract(res_2)
+
   def testCopy(self):
     dict_1 = dict(franc=1, wood=2)
     res_1 = resource.Resource(**dict_1)
@@ -269,6 +288,11 @@ class TestBasicResourceElement(unittest.TestCase):
     element = resource.Franc(1)
     element.Subtract(1)
     self.assertEqual(element.GetNumber(), 0)
+
+  def testSubtractInvalid(self):
+    element = resource.Franc(1)
+    with self.assertRaises(resource.SubtractionError):
+      element.Subtract(2)
 
   def testGetFoodValueFranc(self):
     element = resource.Franc(1)

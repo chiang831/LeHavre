@@ -47,6 +47,10 @@ class Resource(object):
             value, key)
       self._resource_dict[key].Add(value)
 
+  def Subtract(self, other):
+    for key, value in other.GetNonZeroResourceNumberDict().iteritems():
+      self._resource_dict[key].Subtract(value)
+
   def Copy(self):
     return CreateResourceFromDict(self.GetNonZeroResourceNumberDict())
 
@@ -91,6 +95,8 @@ class Resource(object):
     loan = self.GetResourceNumberByName('loan')
     if loan < loan_to_return:
       raise ReturnTooManyLoanError
+class BasicResourceElementError(Exception):
+  pass
 
     franc_to_return = loan_to_return * Loan.GetFrancValueWhenReturnLoan()
     franc = self.GetResourceNumberByName('franc')
@@ -99,6 +105,8 @@ class Resource(object):
 
     self._resource_dict['franc'].Subtract(franc_to_return)
     self._resource_dict['loan'].Subtract(loan_to_return)
+class SubtractionError(BasicResourceElementError):
+  pass
 
 
 class BasicResourceElement(object):
@@ -113,6 +121,8 @@ class BasicResourceElement(object):
     self._number = self._number + number
 
   def Subtract(self, number):
+    if self._number < number:
+      raise SubtractionError()
     self._number = self._number - number
 
   def GetFoodValue(self):
