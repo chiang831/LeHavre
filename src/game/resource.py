@@ -1,11 +1,21 @@
 class ResourceError(Exception):
   pass
 
+
+class NotEnoughMoneyForLoanError(ResourceError):
+  pass
+
+
+class ReturnTooManyLoanError(ResourceError):
+  pass
+
+
 class Resource(object):
   def __init__(self, franc=0, fish=0, wood=0, clay=0, iron=0, 
                grain=0, cattle=0, coal=0, hides=0,
                smoked_fish=0, charcoal=0, brick=0, steel=0,
-               bread=0, meal=0, coke=0, leather=0):
+               bread=0, meal=0, coke=0, leather=0,
+               loan=0):
     self._resource_dict = dict()
     self._resource_dict['franc'] = Franc(franc)
     self._resource_dict['fish'] = Fish(fish)
@@ -24,6 +34,7 @@ class Resource(object):
     self._resource_dict['meal'] = Meal(meal)
     self._resource_dict['coke'] = Coke(coke)
     self._resource_dict['leather'] = Leather(leather)
+    self._resource_dict['loan'] = Loan(loan)
 
   def Equal(self, other):
     return (self.GetNonZeroResourceNumberDict() == 
@@ -71,6 +82,24 @@ class Resource(object):
         food = food + res_element.GetFoodValue()
     return food
 
+  def GetLoan(self, number):
+    add_franc = number * Loan.GetFrancValueWhenGetLoan()
+    self._resource_dict['franc'].Add(add_franc)
+    self._resource_dict['loan'].Add(number)
+
+  def ReturnLoan(self, loan_to_return):
+    loan = self.GetResourceNumberByName('loan')
+    if loan < loan_to_return:
+      raise ReturnTooManyLoanError
+
+    franc_to_return = loan_to_return * Loan.GetFrancValueWhenReturnLoan()
+    franc = self.GetResourceNumberByName('franc')
+    if franc < franc_to_return:
+      raise NotEnoughMoneyForLoanError
+
+    self._resource_dict['franc'].Subtract(franc_to_return)
+    self._resource_dict['loan'].Subtract(loan_to_return)
+
 
 class BasicResourceElement(object):
   _unit_food_value = 0
@@ -82,6 +111,9 @@ class BasicResourceElement(object):
 
   def Add(self, number):
     self._number = self._number + number
+
+  def Subtract(self, number):
+    self._number = self._number - number
 
   def GetFoodValue(self):
     return self._unit_food_value * self._number
@@ -195,6 +227,20 @@ class Leather(Hides):
   name = 'Leather' 
   def __init__(self, number):
     super(Leather, self).__init__(number)
+
+
+class Loan(BasicResourceElement):
+  name = 'Loan'
+  def __init__(self, number):
+    super(Loan, self).__init__(number)
+
+  @classmethod
+  def GetFrancValueWhenGetLoan(cls):
+    return 4
+
+  @classmethod
+  def GetFrancValueWhenReturnLoan(cls):
+    return 5
 
 
 def CreateResourceFromDict(resource_dict):

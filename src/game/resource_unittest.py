@@ -149,6 +149,10 @@ class TestGetResource(unittest.TestCase):
     self._name = 'coke'
     self._TestGetResource()
 
+  def testGetLoan(self):
+    self._name = 'loan'
+    self._TestGetResource()
+
   def _TestClearResource(self):
     self._InitResource()
     self._res.ClearResourceByName(self._name)
@@ -216,6 +220,10 @@ class TestGetResource(unittest.TestCase):
     self._name = 'leather'
     self._TestClearResource()
 
+  def testClearLoan(self):
+    self._name = 'loan'
+    self._TestClearResource()
+
 
 class TestGetFoodValue(unittest.TestCase):
   def testFranc(self):
@@ -257,6 +265,11 @@ class TestBasicResourceElement(unittest.TestCase):
     element.Add(1)
     self.assertEqual(element.GetNumber(), 2)
 
+  def testSubtract(self):
+    element = resource.Franc(1)
+    element.Subtract(1)
+    self.assertEqual(element.GetNumber(), 0)
+
   def testGetFoodValueFranc(self):
     element = resource.Franc(1)
     self.assertEqual(element.GetFoodValue(), 1)
@@ -272,6 +285,32 @@ class TestBasicResourceElement(unittest.TestCase):
   def testGetUnitFoodValueFish(self):
     element = resource.Fish(0)
     self.assertEqual(element.GetUnitFoodValue(), 1)
+
+
+class TestGetLoan(unittest.TestCase):
+  def testGetLoan(self):
+    res = resource.Resource(franc=0, fish=1)
+    res.GetLoan(1)
+    self.assertTrue(res.Equal(resource.Resource(franc=4, fish=1, loan=1)))
+
+  def testReturnLoanNoLoan(self):
+    res = resource.Resource(franc=0, fish=1)
+    with self.assertRaises(resource.ReturnTooManyLoanError):
+      res.ReturnLoan(1)
+
+  def testReturnLoanNotEnoughMoney(self):
+    res = resource.Resource(franc=0, fish=1)
+    res.GetLoan(2)
+    self.assertTrue(res.Equal(resource.Resource(franc=8, fish=1, loan=2)))
+    with self.assertRaises(resource.NotEnoughMoneyForLoanError):
+      res.ReturnLoan(2)
+
+  def testReturnLoanEnoughMoney(self):
+    res = resource.Resource(franc=0, fish=1)
+    res.GetLoan(2)
+    self.assertTrue(res.Equal(resource.Resource(franc=8, fish=1, loan=2)))
+    res.ReturnLoan(1)
+    self.assertTrue(res.Equal(resource.Resource(franc=3, fish=1, loan=1)))
 
 
 if __name__ == '__main__':
