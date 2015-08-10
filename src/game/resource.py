@@ -2,14 +2,6 @@ class ResourceError(Exception):
   pass
 
 
-class NotEnoughMoneyForLoanError(ResourceError):
-  pass
-
-
-class ReturnTooManyLoanError(ResourceError):
-  pass
-
-
 class Resource(object):
   def __init__(self, franc=0, fish=0, wood=0, clay=0, iron=0, 
                grain=0, cattle=0, coal=0, hides=0,

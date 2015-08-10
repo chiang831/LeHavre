@@ -311,30 +311,12 @@ class TestBasicResourceElement(unittest.TestCase):
     self.assertEqual(element.GetUnitFoodValue(), 1)
 
 
-class TestGetLoan(unittest.TestCase):
-  def testGetLoan(self):
-    res = resource.Resource(franc=0, fish=1)
-    res.GetLoan(1)
-    self.assertTrue(res.Equal(resource.Resource(franc=4, fish=1, loan=1)))
+class TestGetLoanValue(unittest.TestCase):
+  def testLoanGet(self):
+    self.assertEqual(resource.Loan.GetFrancValueWhenGetLoan(), 4)
 
-  def testReturnLoanNoLoan(self):
-    res = resource.Resource(franc=0, fish=1)
-    with self.assertRaises(resource.ReturnTooManyLoanError):
-      res.ReturnLoan(1)
-
-  def testReturnLoanNotEnoughMoney(self):
-    res = resource.Resource(franc=0, fish=1)
-    res.GetLoan(2)
-    self.assertTrue(res.Equal(resource.Resource(franc=8, fish=1, loan=2)))
-    with self.assertRaises(resource.NotEnoughMoneyForLoanError):
-      res.ReturnLoan(2)
-
-  def testReturnLoanEnoughMoney(self):
-    res = resource.Resource(franc=0, fish=1)
-    res.GetLoan(2)
-    self.assertTrue(res.Equal(resource.Resource(franc=8, fish=1, loan=2)))
-    res.ReturnLoan(1)
-    self.assertTrue(res.Equal(resource.Resource(franc=3, fish=1, loan=1)))
+  def testLoanReturn(self):
+    self.assertEqual(resource.Loan.GetFrancValueWhenReturnLoan(), 5)
 
 
 if __name__ == '__main__':

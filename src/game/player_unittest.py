@@ -36,5 +36,47 @@ class TestPlayer(unittest.TestCase):
     self.assertTrue(resource_sub.Equal(self._player.GetResource()))
 
 
+class TestGetLoan(unittest.TestCase):
+  def setUp(self):
+    self._name = 'Player1'
+    self._player = player.Player(self._name)
+
+  def testGetLoan(self):
+    res = resource.Resource(franc=0, fish=1)
+    self._player.AddResource(res)
+    self._player.GetLoan(1)
+    self.assertTrue(
+        self._player.GetResource().Equal(
+            resource.Resource(franc=4, fish=1, loan=1)))
+
+  def testReturnLoanNoLoan(self):
+    res = resource.Resource(franc=0, fish=1)
+    self._player.AddResource(res)
+    with self.assertRaises(player.ReturnTooManyLoanError):
+      self._player.ReturnLoan(1)
+
+  def testReturnLoanNotEnoughMoney(self):
+    res = resource.Resource(franc=0, fish=1)
+    self._player.AddResource(res)
+    self._player.GetLoan(2)
+    self.assertTrue(
+        self._player.GetResource().Equal(
+            resource.Resource(franc=8, fish=1, loan=2)))
+    with self.assertRaises(player.NotEnoughMoneyForLoanError):
+      self._player.ReturnLoan(2)
+
+  def testReturnLoanEnoughMoney(self):
+    res = resource.Resource(franc=0, fish=1)
+    self._player.AddResource(res)
+    self._player.GetLoan(2)
+    self.assertTrue(
+        self._player.GetResource().Equal(
+            resource.Resource(franc=8, fish=1, loan=2)))
+    self._player.ReturnLoan(1)
+    self.assertTrue(
+        self._player.GetResource().Equal(
+            resource.Resource(franc=3, fish=1, loan=1)))
+
+
 if __name__ == '__main__':
   unittest.main()
