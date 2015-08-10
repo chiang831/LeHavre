@@ -42,9 +42,6 @@ class Resource(object):
 
   def Add(self, other):
     for key, value in other.GetNonZeroResourceNumberDict().iteritems():
-      if value < 0:
-        raise ResourceError('Can not add a negative %d for key %s',
-            value, key)
       self._resource_dict[key].Add(value)
 
   def Subtract(self, other):
@@ -86,26 +83,16 @@ class Resource(object):
         food = food + res_element.GetFoodValue()
     return food
 
-  def GetLoan(self, number):
-    add_franc = number * Loan.GetFrancValueWhenGetLoan()
-    self._resource_dict['franc'].Add(add_franc)
-    self._resource_dict['loan'].Add(number)
 
-  def ReturnLoan(self, loan_to_return):
-    loan = self.GetResourceNumberByName('loan')
-    if loan < loan_to_return:
-      raise ReturnTooManyLoanError
 class BasicResourceElementError(Exception):
   pass
 
-    franc_to_return = loan_to_return * Loan.GetFrancValueWhenReturnLoan()
-    franc = self.GetResourceNumberByName('franc')
-    if franc < franc_to_return:
-      raise NotEnoughMoneyForLoanError
 
-    self._resource_dict['franc'].Subtract(franc_to_return)
-    self._resource_dict['loan'].Subtract(loan_to_return)
 class SubtractionError(BasicResourceElementError):
+  pass
+
+
+class AddError(BasicResourceElementError):
   pass
 
 
@@ -118,6 +105,8 @@ class BasicResourceElement(object):
     return self._number 
 
   def Add(self, number):
+    if number < 0:
+      raise AddError()
     self._number = self._number + number
 
   def Subtract(self, number):

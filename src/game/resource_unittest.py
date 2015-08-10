@@ -55,7 +55,7 @@ class TestResource(unittest.TestCase):
     res_1 = resource.Resource(**dict_1)
     res_2 = resource.Resource(**dict_2)
 
-    with self.assertRaises(resource.ResourceError):
+    with self.assertRaises(resource.AddError):
       res_1.Add(res_2)
 
   def testSubtract(self):
