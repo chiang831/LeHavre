@@ -1,10 +1,12 @@
 import resource
 
-class FoodTooMuchError(Exception):
+class FoodCheckerError(Exception):
   pass
 
+class FoodTooMuchError(FoodCheckerError):
+  pass
 
-class NotFoodError(Exception):
+class NotFoodError(FoodCheckerError):
   pass
 
 
