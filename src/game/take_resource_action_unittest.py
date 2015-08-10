@@ -36,7 +36,7 @@ class TestTakeResourceAction(unittest.TestCase):
     self._res_name = 'franc'
     self._testTakeInvalidResourceAction()
 
-  def testTakeFrancAction(self):
+  def testTakeFishAction(self):
     self._res_name = 'fish'
     self._testTakeResourceAction()
 

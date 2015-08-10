@@ -10,11 +10,11 @@ class TestFoodChecker(unittest.TestCase):
     self._food_checker = food_checker.FoodChecker(
         self._target_food)
 
-  def testCheckEnough(self):
+  def testCheckEnoughFish(self):
     picked_res = resource.Resource(fish=2)
     self.assertTrue(self._food_checker.Check(picked_res))
 
-  def testCheckEnough(self):
+  def testCheckEnoughFrancFish(self):
     picked_res = resource.Resource(franc=1, fish=1)
     self.assertTrue(self._food_checker.Check(picked_res))
 

@@ -193,7 +193,7 @@ class Meal(Cattle):
   name = 'Meal' 
   _unit_food_value = 3
   def __init__(self, number):
-    super(Cattle, self).__init__(number)
+    super(Meal, self).__init__(number)
 
 
 class Coal(BasicResourceElement):
