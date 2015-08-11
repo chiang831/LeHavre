@@ -1,3 +1,5 @@
+"""This module handles checking if resource meets food requirement."""
+
 import resource
 
 class FoodCheckerError(Exception):
@@ -10,6 +12,7 @@ class NotFoodError(FoodCheckerError):
   pass
 
 
+# pylint: disable=R0903
 class FoodChecker(object):
   def __init__(self, target):
     self._target = target
@@ -29,7 +32,7 @@ class FoodChecker(object):
 
   def _CheckFoodNumber(self):
     food = self._res.GetFoodValue()
-    
+
     if food < self._target:
       return False
 

@@ -1,4 +1,5 @@
-import game_setting
+"""This module handles the game flow."""
+
 import take_resource_action
 import resource
 
@@ -19,15 +20,15 @@ class GameFlow(object):
     self._players.append(new_player)
 
   def GetPlayer(self, name):
-    for p in self._players:
-      if p.GetName() == name:
-        return p
+    for player_foo in self._players:
+      if player_foo.GetName() == name:
+        return player_foo
 
   def StartingOffer(self):
     starting_offer_dict = self._setting.GetLongGameStartingOffer()
     starting_offer = resource.CreateResourceFromDict(starting_offer_dict)
-    for p in self._players:
-      p.AddResource(starting_offer)
+    for player_foo in self._players:
+      player_foo.AddResource(starting_offer)
 
   def SetResourceGenerators(self, res_gen_list):
     self._resource_generators = res_gen_list

@@ -1,3 +1,4 @@
+"""Unittest for food_checker module."""
 import unittest
 
 import food_checker

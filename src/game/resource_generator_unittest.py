@@ -1,3 +1,5 @@
+"""Unittest for resource_generator."""
+
 import unittest
 
 import resource

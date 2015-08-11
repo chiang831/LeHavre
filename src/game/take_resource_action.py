@@ -1,4 +1,8 @@
+"""This module handles user taking resource from a resource pile."""
+
 import resource
+
+#pylint: disable=R0903
 
 class TakeResourceActionError(Exception):
   pass
@@ -18,7 +22,7 @@ class TakeResourceAction(object):
         {self._name: resource_pile.GetResourceNumberByName(self._name)})
 
   def _CheckResourceToTake(self, res):
-    if self._GetNumberOfResourceToTake(res) <= 0: 
+    if self._GetNumberOfResourceToTake(res) <= 0:
       raise TakeResourceActionError('No resource to take')
 
   def _GetNumberOfResourceToTake(self, res):

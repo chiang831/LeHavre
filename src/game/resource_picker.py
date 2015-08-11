@@ -1,3 +1,5 @@
+"""This module handles picking resource from available resource."""
+
 import resource
 
 class ResourcePickerError(Exception):

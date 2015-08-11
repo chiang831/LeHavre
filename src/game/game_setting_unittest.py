@@ -1,4 +1,5 @@
-#!/python
+"""Unittest for game_setting module."""
+
 import unittest
 
 import config
@@ -7,6 +8,7 @@ import game_setting
 class TestGameSetting(unittest.TestCase):
   def setUp(self):
     self._number_of_players = 1
+    self._game_setting_obj = None
 
   def testGameSettingStartResourcePilesDict(self):
     self._CreateGameSettingObject()
@@ -23,8 +25,8 @@ class TestGameSetting(unittest.TestCase):
   def _TestEndOfRound(self):
     self._CreateGameSettingObject()
     number_of_rounds = len(config.END_OF_ROUND_DICT[self._number_of_players])
-    for r in xrange(number_of_rounds):
-      self._TestEndOfRoundOneRound(r) 
+    for round_index in xrange(number_of_rounds):
+      self._TestEndOfRoundOneRound(round_index)
 
   def _TestEndOfRoundOneRound(self, round_index):
     round_ending_obj = self._game_setting_obj.GetEndOfRound(round_index)
@@ -34,7 +36,7 @@ class TestGameSetting(unittest.TestCase):
 
   def _CreateGameSettingObject(self):
     self._game_setting_obj = game_setting.GameSetting(self._number_of_players)
-    
+
   def testEndOfRoundOnePlayer(self):
     self._number_of_players = 1
     self._TestEndOfRound()

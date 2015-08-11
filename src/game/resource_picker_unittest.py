@@ -1,3 +1,5 @@
+"""Unittest for resource_picker module."""
+
 import unittest
 
 import resource
@@ -33,7 +35,7 @@ class TestResourcePickerForTest(unittest.TestCase):
     expected_res = resource.Resource(franc=1)
     self._picker.SetPickedResource(expected_res)
 
-    # These calls will change GetPicked result because a
+    # These calls will NOT change GetPicked result because a
     # ResourcePickerForTest method always returns set in
     # SetPickedResource(expected_res)
     self._picker.Pick(franc=2)

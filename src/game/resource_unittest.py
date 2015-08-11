@@ -1,8 +1,12 @@
-#!/python
+"""Unittest for resource module."""
+
 import resource
 import unittest
 
 class TestResource(unittest.TestCase):
+  def setUp(self):
+    self._res = None
+
   def _InitResource(self, **kwargs):
     self._res = resource.Resource(**kwargs)
 
@@ -87,6 +91,7 @@ class TestResource(unittest.TestCase):
 
 class TestGetResource(unittest.TestCase):
   def setUp(self):
+    self._res = None
     self._name = None
     self._value = 1
 
@@ -171,6 +176,17 @@ class TestGetResource(unittest.TestCase):
   def testGetLoan(self):
     self._name = 'loan'
     self._TestGetResource()
+
+
+class TestClearResource(unittest.TestCase):
+  def setUp(self):
+    self._res = None
+    self._name = None
+    self._value = 1
+
+  def _InitResource(self):
+    self._res = resource.CreateResourceFromDict(
+        {self._name: self._value})
 
   def _TestClearResource(self):
     self._InitResource()
@@ -293,6 +309,11 @@ class TestBasicResourceElement(unittest.TestCase):
     element = resource.Franc(1)
     with self.assertRaises(resource.SubtractionError):
       element.Subtract(2)
+
+  def testClear(self):
+    element = resource.Franc(1)
+    element.Clear()
+    self.assertEqual(element.GetNumber(), 0)
 
   def testGetFoodValueFranc(self):
     element = resource.Franc(1)

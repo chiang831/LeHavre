@@ -1,3 +1,5 @@
+"""This module handles game setting for different number of players."""
+
 import config
 
 class GameSetting(object):
@@ -5,11 +7,13 @@ class GameSetting(object):
   def __init__(self, number_of_players):
     self._number_of_players = number_of_players
 
-  def GetStartResourcesPilesDict(self):
+  @classmethod
+  def GetStartResourcesPilesDict(cls):
     """This start resources setting is the same for all number of players."""
     return config.START_RESOURCES_PILES
 
-  def GetLongGameStartingOffer(self):
+  @classmethod
+  def GetLongGameStartingOffer(cls):
     return config.LONG_GAME_STARTING_OFFER
 
   def GetEndOfRound(self, round_index):

@@ -1,6 +1,8 @@
+"""Unittest for take_resource_action"""
+
 import unittest
 
-import take_resource_action 
+import take_resource_action
 import resource
 import player
 
@@ -9,24 +11,25 @@ class TestTakeResourceAction(unittest.TestCase):
     self._res_name = None
 
   def _testTakeResourceAction(self):
-    p = player.Player('Player1')
-    p.AddResource(resource.CreateResourceFromDict({self._res_name: 1}))
+    player1 = player.Player('Player1')
+    player1.AddResource(resource.CreateResourceFromDict({self._res_name: 1}))
     resource_pile = resource.CreateResourceFromDict({self._res_name: 2})
     action = take_resource_action.CreateTakeResourceAction(self._res_name)
 
-    action.TakeAction(p, resource_pile)
+    action.TakeAction(player1, resource_pile)
 
-    self.assertEqual(p.GetResource().GetResourceNumberByName(self._res_name), 3)
+    self.assertEqual(
+        player1.GetResource().GetResourceNumberByName(self._res_name), 3)
     self.assertEqual(resource_pile.GetResourceNumberByName(self._res_name), 0)
 
   def _testTakeInvalidResourceAction(self):
-    p= player.Player('Player1')
+    player1 = player.Player('Player1')
     resource_pile = resource.Resource()
     action = take_resource_action.CreateTakeResourceAction(self._res_name)
 
     with self.assertRaises(
         take_resource_action.TakeResourceActionError):
-      action.TakeAction(p, resource_pile)
+      action.TakeAction(player1, resource_pile)
 
   def testTakeFrancAction(self):
     self._res_name = 'franc'

@@ -1,3 +1,5 @@
+"""This module handles player in the game."""
+
 import resource
 
 class PlayerError(Exception):

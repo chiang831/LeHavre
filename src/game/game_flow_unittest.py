@@ -1,3 +1,5 @@
+"""Unittest for game_flow module."""
+
 import unittest
 
 import config
@@ -9,16 +11,17 @@ import player
 
 class TestGameFlow(unittest.TestCase):
   def setUp(self):
+    self._flow = None
     self._number_of_players = None
 
   def _CreateGameFlow(self):
     setting = game_setting.GameSetting(self._number_of_players)
-    self._flow = game_flow.CreateGameFlow(setting) 
+    self._flow = game_flow.CreateGameFlow(setting)
 
   def _CreateAndAddPlayer(self, name):
-    p = player.Player(name)
-    self._flow.AddPlayer(p)
-    return p
+    player1 = player.Player(name)
+    self._flow.AddPlayer(player1)
+    return player1
 
   def testGameFlowStartingResourcePile(self):
     self._number_of_players = 1
@@ -40,22 +43,24 @@ class TestGameFlow(unittest.TestCase):
     self._CreateGameFlow()
     name1 = 'Player1'
     name2 = 'Player2'
-    p1 = self._CreateAndAddPlayer(name1)
-    p2 = self._CreateAndAddPlayer(name2)
+    player1 = self._CreateAndAddPlayer(name1)
+    player2 = self._CreateAndAddPlayer(name2)
     self._flow.StartingOffer()
     expected_resource = resource.CreateResourceFromDict(
         config.LONG_GAME_STARTING_OFFER)
-    self.assertTrue(p1.GetResource().Equal(expected_resource))
-    self.assertTrue(p2.GetResource().Equal(expected_resource))
+    self.assertTrue(player1.GetResource().Equal(expected_resource))
+    self.assertTrue(player2.GetResource().Equal(expected_resource))
 
-  def _GetResourceGenerators(self, res_list):
+  @classmethod
+  def _GetResourceGenerators(cls, res_list):
     res_generator_list = list()
     for res in res_list:
       res_generator_list.append(
           resource_generator.ResourceGenerator(res))
     return res_generator_list
 
-  def _GetGenerateResourceList(self):
+  @classmethod
+  def _GetGenerateResourceList(cls):
     resource_generator_dicts = config.RESOURCE_GENERATOR_DICTS
     generate_res_list = list()
     for res_gen_dict in resource_generator_dicts:
@@ -85,10 +90,10 @@ class TestGameFlow(unittest.TestCase):
     self._CreateGameFlow()
     res_pile = resource.Resource(franc=1, clay=2)
     name = 'Player1'
-    p1 = self._CreateAndAddPlayer(name)
+    player1 = self._CreateAndAddPlayer(name)
     self._flow.SetResourcePileForTest(res_pile)
     self._flow.PlayerTakeResourceAction('franc')
-    self.assertTrue(p1.GetResource().Equal(
+    self.assertTrue(player1.GetResource().Equal(
         resource.Resource(franc=1)))
 
   def testGetCurrentPlayer(self):
@@ -96,11 +101,12 @@ class TestGameFlow(unittest.TestCase):
     self._CreateGameFlow()
     name1 = 'Player1'
     name2 = 'Player2'
-    p1 = self._CreateAndAddPlayer(name1)
-    p2 = self._CreateAndAddPlayer(name2)
-    self.assertEqual(self._flow.GetCurrentPlayer(), p1)
+    player1 = self._CreateAndAddPlayer(name1)
+    player2 = self._CreateAndAddPlayer(name2)
+    self.assertEqual(self._flow.GetCurrentPlayer(), player1)
     self._flow.NextTurn()
-    self.assertEqual(self._flow.GetCurrentPlayer(), p2)
+    self.assertEqual(self._flow.GetCurrentPlayer(), player2)
+
 
 if __name__ == '__main__':
   unittest.main()

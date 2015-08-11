@@ -1,9 +1,12 @@
+"""This module handles resource and elements."""
+
 class ResourceError(Exception):
   pass
 
 
+# pylint: disable=R0913, R0914
 class Resource(object):
-  def __init__(self, franc=0, fish=0, wood=0, clay=0, iron=0, 
+  def __init__(self, franc=0, fish=0, wood=0, clay=0, iron=0,
                grain=0, cattle=0, coal=0, hides=0,
                smoked_fish=0, charcoal=0, brick=0, steel=0,
                bread=0, meal=0, coke=0, leather=0,
@@ -29,7 +32,7 @@ class Resource(object):
     self._resource_dict['loan'] = Loan(loan)
 
   def Equal(self, other):
-    return (self.GetNonZeroResourceNumberDict() == 
+    return (self.GetNonZeroResourceNumberDict() ==
             other.GetNonZeroResourceNumberDict())
 
   def Add(self, other):
@@ -45,10 +48,10 @@ class Resource(object):
 
   def GetNonZeroResourceNumberDict(self):
     ret = dict()
-    for key, value in self._resource_dict.iteritems():
+    for key in self._resource_dict.keys():
       number = self.GetResourceNumberByName(key)
       if number:
-        ret[key] = number     
+        ret[key] = number
     return ret
 
   def GetNonZeroResourceElementDict(self):
@@ -66,7 +69,7 @@ class Resource(object):
     return self._GetResourceByName(name).GetNumber()
 
   def ClearResourceByName(self, name):
-    self._resource_dict[name]._number = 0
+    self._resource_dict[name].Clear()
 
   def GetFoodValue(self):
     food = 0
@@ -92,9 +95,9 @@ class BasicResourceElement(object):
   _unit_food_value = 0
   def __init__(self, number):
     self._number = number
- 
+
   def GetNumber(self):
-    return self._number 
+    return self._number
 
   def Add(self, number):
     if number < 0:
@@ -106,6 +109,9 @@ class BasicResourceElement(object):
       raise SubtractionError()
     self._number = self._number - number
 
+  def Clear(self):
+    self._number = 0
+
   def GetFoodValue(self):
     return self._unit_food_value * self._number
 
@@ -114,108 +120,108 @@ class BasicResourceElement(object):
 
 
 class Franc(BasicResourceElement):
-  name = 'Franc'  
+  name = 'Franc'
   _unit_food_value = 1
   def __init__(self, number):
     super(Franc, self).__init__(number)
 
 
 class Fish(BasicResourceElement):
-  name = 'Fish' 
+  name = 'Fish'
   _unit_food_value = 1
   def __init__(self, number):
     super(Fish, self).__init__(number)
 
 
 class SmokedFish(Fish):
-  name = 'Smoked Fish' 
+  name = 'Smoked Fish'
   _unit_food_value = 2
   def __init__(self, number):
     super(SmokedFish, self).__init__(number)
 
 
 class Wood(BasicResourceElement):
-  name = 'Wood' 
+  name = 'Wood'
   def __init__(self, number):
     super(Wood, self).__init__(number)
 
 
 class Charcoal(Wood):
-  name = 'Charcoal' 
+  name = 'Charcoal'
   def __init__(self, number):
     super(Charcoal, self).__init__(number)
 
 
 class Clay(BasicResourceElement):
-  name = 'Clay' 
+  name = 'Clay'
   def __init__(self, number):
     super(Clay, self).__init__(number)
 
 
 class Brick(Clay):
-  name = 'Brick' 
+  name = 'Brick'
   def __init__(self, number):
     super(Brick, self).__init__(number)
 
 
 class Iron(BasicResourceElement):
-  name = 'Iron' 
+  name = 'Iron'
   def __init__(self, number):
     super(Iron, self).__init__(number)
 
 
 class Steel(Iron):
-  name = 'Steel' 
+  name = 'Steel'
   def __init__(self, number):
     super(Steel, self).__init__(number)
 
 
 class Grain(BasicResourceElement):
-  name = 'Grain' 
+  name = 'Grain'
   def __init__(self, number):
     super(Grain, self).__init__(number)
 
 
 class Bread(Grain):
-  name = 'Bread' 
+  name = 'Bread'
   _unit_food_value = 2
   def __init__(self, number):
     super(Bread, self).__init__(number)
 
 
 class Cattle(BasicResourceElement):
-  name = 'Cattle' 
+  name = 'Cattle'
   def __init__(self, number):
     super(Cattle, self).__init__(number)
 
 
 class Meal(Cattle):
-  name = 'Meal' 
+  name = 'Meal'
   _unit_food_value = 3
   def __init__(self, number):
     super(Meal, self).__init__(number)
 
 
 class Coal(BasicResourceElement):
-  name = 'Coal' 
+  name = 'Coal'
   def __init__(self, number):
     super(Coal, self).__init__(number)
 
 
 class Coke(Coal):
-  name = 'Coke' 
+  name = 'Coke'
   def __init__(self, number):
     super(Coke, self).__init__(number)
 
 
 class Hides(BasicResourceElement):
-  name = 'Hides' 
+  name = 'Hides'
   def __init__(self, number):
     super(Hides, self).__init__(number)
 
 
 class Leather(Hides):
-  name = 'Leather' 
+  name = 'Leather'
   def __init__(self, number):
     super(Leather, self).__init__(number)
 
@@ -236,5 +242,3 @@ class Loan(BasicResourceElement):
 
 def CreateResourceFromDict(resource_dict):
   return Resource(**resource_dict)
-
-

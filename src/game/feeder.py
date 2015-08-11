@@ -1,3 +1,5 @@
+"""This module handles feeding food to worker in the end of a round."""
+
 import food_checker
 import resource
 
@@ -7,21 +9,21 @@ class FeederError(Exception):
 
 class Feeder(object):
   def __init__(self):
-    self._resource_picker= None
+    self._resource_picker = None
     self._player = None
     self._food_req = None
     self._food_checker = None
     self._picked_res = None
 
   def SetResourcePicker(self, picker):
-    self._resource_picker= picker
+    self._resource_picker = picker
 
-  def Feed(self, player, food_requirement, ui=True):
+  def Feed(self, player, food_requirement, use_ui=True):
     self._player = player
     self._food_req = food_requirement
     self._food_checker = food_checker.FoodChecker(self._food_req)
- 
-    if ui:
+
+    if use_ui:
       pass
       # TODO Provide UI so user can pick resources and
       # store the picked result in resource_picker.
@@ -31,7 +33,7 @@ class Feeder(object):
 
     self._picked_res = self._resource_picker.GetPicked()
     self._FeedImpl()
-     
+
   def _FeedImpl(self):
     try:
       enough = self._food_checker.Check(self._picked_res)
@@ -55,7 +57,8 @@ class Feeder(object):
     if test_res.GetFoodValue():
       raise FeederError('Can pay more')
 
-  def _GetNeededLoanNumber(self, needed_loan_value):
+  @classmethod
+  def _GetNeededLoanNumber(cls, needed_loan_value):
     loan_unit_value = resource.Loan.GetFrancValueWhenGetLoan()
     needed_loan_number = (
         needed_loan_value / loan_unit_value)
@@ -72,4 +75,3 @@ class Feeder(object):
     self._player.GetLoan(needed_loan_number)
     self._player.SubtractResource(
         resource.Resource(franc=needed_loan_value))
-    print self._player._resource.GetNonZeroResourceNumberDict()

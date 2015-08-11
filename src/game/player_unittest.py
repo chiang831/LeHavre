@@ -1,3 +1,5 @@
+"""Unittest for player module."""
+
 import unittest
 
 import player
