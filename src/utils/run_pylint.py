@@ -14,7 +14,7 @@ class PylintRunnerError(Exception):
   pass
 
 
-def parse_args():
+def ParseArgs():
   """Parse command line arguments.
 
   @returns: The populated namespace.
@@ -35,7 +35,7 @@ def parse_args():
   return args
 
 
-def get_src_path():
+def GetSrcPath():
   """Gets src directory path.
 
   @returns: The path to src directory.
@@ -45,7 +45,7 @@ def get_src_path():
   return src_path
 
 
-def find_all_py_files(src_path):
+def FindAllPyFiles(src_path):
   """Finds all python files under a path.
 
   @param src_path: A path to src directory.
@@ -53,7 +53,8 @@ def find_all_py_files(src_path):
   @returns: A list containing paths to all python files under a path.
 
   """
-  python_files = [os.path.join(dirpath, f)
+  python_files = [
+      os.path.join(dirpath, f)
       for dirpath, _, files in os.walk(src_path)
       for f in files if f.endswith('.py')]
 
@@ -62,7 +63,7 @@ def find_all_py_files(src_path):
   return python_files
 
 
-def find_rc_path(src_path):
+def FindRcPath(src_path):
   """Finds the rcfile used by pylint.
 
   @param src_path: A path to src directory.
@@ -78,7 +79,7 @@ def find_rc_path(src_path):
   return rc_path
 
 
-def run_pylint(rc_path, files, error):
+def RunPylint(rc_path, files, error):
   """Run pylint using rcfile on files.
 
   @param rc_path: The path to rc file.
@@ -96,14 +97,14 @@ def run_pylint(rc_path, files, error):
   Run(arguments)
 
 
-def main():
+def Main():
   """The main entry point."""
-  args = parse_args()
-  src_path = get_src_path()
-  files = args.files if args.files else find_all_py_files(src_path)
-  rc_path = find_rc_path(src_path)
-  run_pylint(rc_path, files, args.error)
+  args = ParseArgs()
+  src_path = GetSrcPath()
+  files = args.files if args.files else FindAllPyFiles(src_path)
+  rc_path = FindRcPath(src_path)
+  RunPylint(rc_path, files, args.error)
 
 
 if __name__ == '__main__':
-  main()
+  Main()
