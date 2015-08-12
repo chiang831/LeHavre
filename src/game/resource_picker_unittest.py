@@ -21,6 +21,14 @@ class TestResourcePicker(unittest.TestCase):
     expected_res = resource.Resource(franc=1, fish=1)
     self.assertTrue(self._picker.GetPicked().Equal(expected_res))
 
+  def testPickOneFrancThenOneFishThenOneFranc(self):
+    self._picker.SetAvailableResource(resource.Resource(franc=2, fish=1))
+    self._picker.Pick(franc=1)
+    self._picker.Pick(fish=1)
+    self._picker.Pick(franc=1)
+    expected_res = resource.Resource(franc=2, fish=1)
+    self.assertTrue(self._picker.GetPicked().Equal(expected_res))
+
   def testPickInvalid(self):
     self._picker.SetAvailableResource(resource.Resource(franc=1, fish=1))
     with self.assertRaises(resource_picker.ResourcePickerError):
