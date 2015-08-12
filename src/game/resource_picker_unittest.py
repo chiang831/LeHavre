@@ -26,6 +26,12 @@ class TestResourcePicker(unittest.TestCase):
     with self.assertRaises(resource_picker.ResourcePickerError):
       self._picker.Pick(clay=1)
 
+  def testGetAvailable(self):
+    self._picker.SetAvailableResource(resource.Resource(franc=1, fish=1))
+    self.assertTrue(
+        self._picker.GetAvailableResource().Equal(
+            resource.Resource(franc=1, fish=1)))
+
 
 class TestResourcePickerForTest(unittest.TestCase):
   def setUp(self):

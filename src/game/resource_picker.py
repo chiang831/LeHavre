@@ -13,6 +13,9 @@ class ResourcePicker(object):
   def SetAvailableResource(self, res):
     self._available = res
 
+  def GetAvailableResource(self):
+    return self._available
+
   def Pick(self, **kwargs):
     resource_to_pick = resource.Resource(**kwargs)
     if not self._CanPick(resource_to_pick):
