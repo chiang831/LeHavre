@@ -30,6 +30,13 @@ class SimpleUI(object):
     output += self._ShowElementsInResource(res_to_show)
     return output
 
+  def ShowPickedFoodValue(self):
+    output = 'Picked food value: '
+    picked_res= self._picker.GetPicked()
+    food_value = picked_res.GetFoodValue()
+    output += str(food_value)
+    return output
+
   def AskUserInput(self):
     return input('Input selected item in format like "franc: 1, fish: 1"')
 
