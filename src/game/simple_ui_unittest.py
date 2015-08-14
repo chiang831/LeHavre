@@ -47,6 +47,18 @@ class SimpleUIUnittest(unittest.TestCase):
     expected_output = ('Picked food value: 4')
     self.assertEqual(output, expected_output)
 
+  def testShow(self):
+    self._res = resource.Resource(franc=1, fish=1, smoked_fish=1)
+    self._SetAvailableResource()
+    self._resource_picker.Pick(franc=1, fish=1, smoked_fish=1)
+    output = self._ui.Show()
+    expected_output = ('Select from available resource: '
+                       'Franc: 1, Fish: 1, Smoked Fish: 1.\n')
+    expected_output += ('You already picked: '
+                        'Franc: 1, Fish: 1, Smoked Fish: 1.\n')
+    expected_output += ('Picked food value: 4')
+    self.assertEqual(output, expected_output)
+
   def testTakeUserInput(self):
     self._res = resource.Resource(franc=1, fish=1, clay=1)
     self._SetAvailableResource()

@@ -16,6 +16,13 @@ class SimpleUI(object):
     print output
     return output
 
+  def Show(self):
+    output = ''
+    output += self.ShowResources() + '\n'
+    output += self.ShowPicked() + '\n'
+    output += self.ShowPickedFoodValue()
+    return output
+
   def ShowResources(self):
     # Example output:
     # "Select from available resource: Franc: 1, Fish: 1."
