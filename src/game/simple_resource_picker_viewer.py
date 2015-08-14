@@ -1,6 +1,6 @@
-"""This module provides simple command line UI for picking resource."""
+"""This module provides simple viewer for picking resource."""
 
-class SimpleUI(object):
+class SimpleResourcePickerViewer(object):
   def __init__(self, resource_picker):
     self._picker = resource_picker
 
@@ -13,7 +13,6 @@ class SimpleUI(object):
         output += '.'
       else:
         output += ','
-    print output
     return output
 
   def Show(self):
@@ -43,18 +42,3 @@ class SimpleUI(object):
     food_value = picked_res.GetFoodValue()
     output += str(food_value)
     return output
-
-  def AskUserInput(self):
-    return input('Input selected item in format like "franc: 1, fish: 1"')
-
-  def TakeUserInput(self, user_input):
-    # Example user_input = "franc: 1, fish: 1, smoked_fish: 1"
-    parsed_inputs = user_input.split(',')
-    picked_dict = dict()
-    for item_input in parsed_inputs:
-      item_input = item_input.strip()
-      element_argument, number = item_input.split(':')
-      element_argument = element_argument.strip()
-      number = int(number.strip())
-      picked_dict[element_argument] = number
-    self._picker.Pick(**picked_dict)

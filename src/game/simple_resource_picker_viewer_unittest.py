@@ -1,15 +1,16 @@
-"""Unittest for simple_ui module."""
+"""Unittest for simple_resource_picker_viewer module."""
 
 import unittest
 
 import resource
-import simple_ui
+import simple_resource_picker_viewer
 import resource_picker
 
-class SimpleUIUnittest(unittest.TestCase):
+class TestSimpleViewernittest(unittest.TestCase):
   def setUp(self):
     self._resource_picker = resource_picker.ResourcePicker()
-    self._ui = simple_ui.SimpleUI(self._resource_picker)
+    self._viewer = simple_resource_picker_viewer.SimpleResourcePickerViewer(
+        self._resource_picker)
     self._res = None
 
   def _SetAvailableResource(self):
@@ -18,14 +19,14 @@ class SimpleUIUnittest(unittest.TestCase):
   def testShowUI(self):
     self._res = resource.Resource(franc=1, fish=1)
     self._SetAvailableResource()
-    output = self._ui.ShowResources()
+    output = self._viewer.ShowResources()
     expected_output = 'Select from available resource: Franc: 1, Fish: 1.'
     self.assertEqual(output, expected_output)
 
   def testShowUISmokedFish(self):
     self._res = resource.Resource(franc=1, fish=1, smoked_fish=1)
     self._SetAvailableResource()
-    output = self._ui.ShowResources()
+    output = self._viewer.ShowResources()
     expected_output = ('Select from available resource: '
                        'Franc: 1, Fish: 1, Smoked Fish: 1.')
     self.assertEqual(output, expected_output)
@@ -34,7 +35,7 @@ class SimpleUIUnittest(unittest.TestCase):
     self._res = resource.Resource(franc=1, fish=1, smoked_fish=1)
     self._SetAvailableResource()
     self._resource_picker.Pick(franc=1, fish=1, smoked_fish=1)
-    output = self._ui.ShowPicked()
+    output = self._viewer.ShowPicked()
     expected_output = ('You already picked: '
                        'Franc: 1, Fish: 1, Smoked Fish: 1.')
     self.assertEqual(output, expected_output)
@@ -43,7 +44,7 @@ class SimpleUIUnittest(unittest.TestCase):
     self._res = resource.Resource(franc=1, fish=1, smoked_fish=1)
     self._SetAvailableResource()
     self._resource_picker.Pick(franc=1, fish=1, smoked_fish=1)
-    output = self._ui.ShowPickedFoodValue()
+    output = self._viewer.ShowPickedFoodValue()
     expected_output = ('Picked food value: 4')
     self.assertEqual(output, expected_output)
 
@@ -51,7 +52,7 @@ class SimpleUIUnittest(unittest.TestCase):
     self._res = resource.Resource(franc=1, fish=1, smoked_fish=1)
     self._SetAvailableResource()
     self._resource_picker.Pick(franc=1, fish=1, smoked_fish=1)
-    output = self._ui.Show()
+    output = self._viewer.Show()
     expected_output = ('Select from available resource: '
                        'Franc: 1, Fish: 1, Smoked Fish: 1.\n')
     expected_output += ('You already picked: '
@@ -59,31 +60,6 @@ class SimpleUIUnittest(unittest.TestCase):
     expected_output += ('Picked food value: 4')
     self.assertEqual(output, expected_output)
 
-  def testTakeUserInput(self):
-    self._res = resource.Resource(franc=1, fish=1, clay=1)
-    self._SetAvailableResource()
-    # The name is the same as arguments in resource.Resource.
-    user_input = 'franc: 1, fish: 1'
-    self._ui.TakeUserInput(user_input)
-    expected_picked_res = resource.Resource(franc=1, fish=1)
-    self.assertTrue(
-        self._resource_picker.GetPicked().Equal(expected_picked_res))
-
-  def testTakeUserInputSmokedFish(self):
-    self._res = resource.Resource(franc=1, fish=1, smoked_fish=1)
-    self._SetAvailableResource()
-    user_input = 'franc: 1, fish: 1, smoked_fish: 1'
-    self._ui.TakeUserInput(user_input)
-    expected_picked_res = resource.Resource(franc=1, fish=1, smoked_fish=1)
-    self.assertTrue(
-        self._resource_picker.GetPicked().Equal(expected_picked_res))
-
-  def testTakeUserInputInvalid(self):
-    self._res = resource.Resource(franc=1, fish=1, clay=1)
-    self._SetAvailableResource()
-    user_input = 'franc: 1, fish: 1, smoked_fish: 1'
-    with self.assertRaises(resource_picker.ResourcePickerError):
-      self._ui.TakeUserInput(user_input)
 
 if __name__ == '__main__':
   unittest.main()
