@@ -18,23 +18,15 @@ class Feeder(object):
   def SetResourcePicker(self, picker):
     self._resource_picker = picker
 
-  def Feed(self, player, food_requirement, use_ui=True):
+  def SetPlayer(self, player):
     self._player = player
+
+  def SetFoodRequirement(self, food_requirement):
     self._food_req = food_requirement
     self._food_checker = food_checker.FoodChecker(self._food_req)
 
-    if use_ui:
-      pass
-      # TODO Provide UI so user can pick resources and
-      # store the picked result in resource_picker.
-
-      # Also, handle FeederError in _FeedImpl so it can
-      # let user select again.
-
+  def FeedWithPickedResource(self):
     self._picked_res = self._resource_picker.GetPicked()
-    self._FeedImpl()
-
-  def _FeedImpl(self):
     try:
       enough = self._food_checker.Check(self._picked_res)
     except food_checker.FoodTooMuchError:

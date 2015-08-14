@@ -21,6 +21,10 @@ class TestFeeder(unittest.TestCase):
   def _SetAvailableResource(self):
     self._player.AddResource(self._available_res)
 
+  def _SetFoodAndPlayer(self):
+    self._feeder.SetFoodRequirement(self._food_req)
+    self._feeder.SetPlayer(self._player)
+
   def _SetPickedResource(self):
     self._resource_picker_for_test.SetPickedResource(self._picked_res)
 
@@ -28,10 +32,11 @@ class TestFeeder(unittest.TestCase):
     self._food_req = 2
     self._available_res = resource.Resource(fish=2)
     self._SetAvailableResource()
+    self._SetFoodAndPlayer()
     self._picked_res = resource.Resource(fish=2)
     self._SetPickedResource()
 
-    self._feeder.Feed(self._player, self._food_req, use_ui=False)
+    self._feeder.FeedWithPickedResource()
     self.assertTrue(
         self._player.GetResource().Equal(
             resource.Resource()))
@@ -40,19 +45,21 @@ class TestFeeder(unittest.TestCase):
     self._food_req = 2
     self._available_res = resource.Resource(fish=2)
     self._SetAvailableResource()
+    self._SetFoodAndPlayer()
     self._picked_res = resource.Resource(fish=1)
     self._SetPickedResource()
 
     with self.assertRaises(feeder.FeederError):
-      self._feeder.Feed(self._player, self._food_req, use_ui=False)
+      self._feeder.FeedWithPickedResource()
 
   def testNotEnoughFoodGetLoan(self):
     self._food_req = 4
     self._available_res = resource.Resource(fish=1, franc=1)
     self._SetAvailableResource()
+    self._SetFoodAndPlayer()
     self._picked_res = resource.Resource(fish=1, franc=1)
     self._SetPickedResource()
-    self._feeder.Feed(self._player, self._food_req, use_ui=False)
+    self._feeder.FeedWithPickedResource()
 
     self.assertTrue(
         self._player.GetResource().Equal(
