@@ -242,3 +242,12 @@ class Loan(BasicResourceElement):
 
 def CreateResourceFromDict(resource_dict):
   return Resource(**resource_dict)
+
+
+def FilterResourceFood(res):
+  filtered_res = res.Copy()
+  element_dict = filtered_res.GetNonZeroResourceElementDict()
+  for name, element in element_dict.items():
+    if not element.GetUnitFoodValue():
+      element.Clear()
+  return filtered_res

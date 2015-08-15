@@ -340,5 +340,12 @@ class TestGetLoanValue(unittest.TestCase):
     self.assertEqual(resource.Loan.GetFrancValueWhenReturnLoan(), 5)
 
 
+class TestFilterResource(unittest.TestCase):
+  def testFilterFood(self):
+    res = resource.Resource(franc=1, fish=1, clay=1)
+    filtered_res = resource.FilterResourceFood(res)
+    self.assertTrue(filtered_res.Equal(resource.Resource(franc=1, fish=1)))
+
+
 if __name__ == '__main__':
   unittest.main()
