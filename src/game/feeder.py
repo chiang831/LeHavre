@@ -67,3 +67,11 @@ class Feeder(object):
     self._player.GetLoan(needed_loan_number)
     self._player.SubtractResource(
         resource.Resource(franc=needed_loan_value))
+
+
+def CreateFeeder(player, food_requirement, picker):
+  feeder_obj = Feeder()
+  feeder_obj.SetResourcePicker(picker)
+  feeder_obj.SetPlayer(player)
+  feeder_obj.SetFoodRequirement(food_requirement)
+  return feeder_obj
