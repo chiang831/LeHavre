@@ -41,3 +41,10 @@ class ResourcePickerForTest(ResourcePicker):
 
   def SetPickedResource(self, res):
     self._picked_resource = res
+
+
+def CreateResourcePickerForFood(res):
+  res_filtered = resource.FilterResourceFood(res)
+  picker = ResourcePicker()
+  picker.SetAvailableResource(res_filtered)
+  return picker
