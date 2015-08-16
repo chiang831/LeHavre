@@ -28,6 +28,10 @@ class TestFeeder(unittest.TestCase):
   def _SetPickedResource(self):
     self._resource_picker_for_test.SetPickedResource(self._picked_res)
 
+  def testGetResourcePicker(self):
+    self.assertEqual(
+        self._feeder.GetResourcePicker(), self._resource_picker_for_test)
+
   def testFeedByFish(self):
     self._food_req = 2
     self._available_res = resource.Resource(fish=2)
