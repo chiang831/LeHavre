@@ -4,7 +4,8 @@ class SimpleResourcePickerViewer(object):
   def __init__(self, resource_picker):
     self._picker = resource_picker
 
-  def _ShowElementsInResource(self, res_to_show):
+  @classmethod
+  def _ShowElementsInResource(cls, res_to_show):
     output = ''
     res_elements = res_to_show.GetNonZeroResourceElementDict().values()
     for idx, element in enumerate(res_elements):
