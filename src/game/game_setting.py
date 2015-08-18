@@ -18,3 +18,6 @@ class GameSetting(object):
 
   def GetEndOfRound(self, round_index):
     return config.END_OF_ROUND_DICT[self._number_of_players][round_index]
+  @classmethod
+  def GetNumberOfTurns(cls):
+    return config.NUMBER_OF_TURNS

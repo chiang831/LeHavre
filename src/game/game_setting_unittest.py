@@ -57,6 +57,12 @@ class TestGameSetting(unittest.TestCase):
     self._number_of_players = 5
     self._TestEndOfRound()
 
+  def testNumberOfTurns(self):
+    self._CreateGameSettingObject()
+    self.assertEqual(
+        self._game_setting_obj.GetNumberOfTurns(),
+        config.NUMBER_OF_TURNS)
+
 
 if __name__ == '__main__':
   unittest.main()
