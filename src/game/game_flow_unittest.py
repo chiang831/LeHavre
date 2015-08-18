@@ -13,10 +13,12 @@ class TestGameFlow(unittest.TestCase):
   def setUp(self):
     self._flow = None
     self._number_of_players = None
+    self._gameGsetting = None
+    self._generate_res_list = None
 
   def _CreateGameFlow(self):
-    setting = game_setting.GameSetting(self._number_of_players)
-    self._flow = game_flow.CreateGameFlow(setting)
+    self._game_setting = game_setting.GameSetting(self._number_of_players)
+    self._flow = game_flow.CreateGameFlow(self._game_setting)
 
   def _CreateAndAddPlayer(self, name):
     player1 = player.Player(name)
@@ -68,16 +70,19 @@ class TestGameFlow(unittest.TestCase):
       generate_res_list.append(res)
     return generate_res_list
 
+  def _SetGenerator(self):
+    self._generate_res_list = self._GetGenerateResourceList()
+    res_generator_list = self._GetResourceGenerators(self._generate_res_list)
+    self._flow.SetResourceGenerators(res_generator_list)
+
   def testResourceGenerator(self):
     self._number_of_players = 1
     self._CreateGameFlow()
-    generate_res_list = self._GetGenerateResourceList()
-    res_generator_list = self._GetResourceGenerators(generate_res_list)
-    self._flow.SetResourceGenerators(res_generator_list)
+    self._SetGenerator()
 
     expected_res_pile = self._flow.GetResourcePile().Copy()
-    for turn in xrange(len(generate_res_list)):
-      expected_res_pile.Add(generate_res_list[turn])
+    for turn in xrange(self._game_setting.GetNumberOfTurns()):
+      expected_res_pile.Add(self._generate_res_list[turn])
 
       self._flow.GenerateResource()
       self.assertTrue(
@@ -107,6 +112,39 @@ class TestGameFlow(unittest.TestCase):
     self._flow.NextTurn()
     self.assertEqual(self._flow.GetCurrentPlayer(), player2)
 
+  def _PlayOneRound(self):
+    for _ in xrange(self._game_setting.GetNumberOfTurns()):
+      self._flow.NextTurn()
+
+  def testNotFeedYet(self):
+    name1 = 'Player1'
+    self._number_of_players = 1
+    self._CreateGameFlow()
+    player1 = self._CreateAndAddPlayer(name1)
+    player1.AddResource(resource.Resource(franc=2, fish=3))
+    self._SetGenerator()
+    self._PlayOneRound()
+
+    # Has not pick resource and not call FeedWithPickedForPlayer yet.
+    with self.assertRaises(game_flow.GameFlowError):
+      self._flow.NextRound()
+
+  def testFeed(self):
+    name1 = 'Player1'
+    self._number_of_players = 1
+    self._CreateGameFlow()
+    player1 = self._CreateAndAddPlayer(name1)
+    player1.AddResource(resource.Resource(franc=2, fish=3))
+    self._SetGenerator()
+    self._PlayOneRound()
+
+    # Let player1 feed for end of round food.
+    picker = self._flow.GetResourcePickerForPlayer(name1)
+    picker.Pick(franc=2, fish=3)
+    self._flow.FeedWithPickedForPlayer(name1)
+
+    # Can enter next round
+    self._flow.NextRound()
 
 if __name__ == '__main__':
   unittest.main()

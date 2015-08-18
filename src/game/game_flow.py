@@ -1,7 +1,13 @@
 """This module handles the game flow."""
 
+import feeder
+import feeding_handler
 import take_resource_action
 import resource
+import resource_picker
+
+class GameFlowError(Exception):
+  pass
 
 class GameFlow(object):
   def __init__(self, setting):
@@ -12,6 +18,8 @@ class GameFlow(object):
     self._resource_generators = list()
     self._turn_index = 0
     self._current_player_index = 0
+    self._round_index = 0
+    self._feeding_handler = None
 
   def GetResourcePile(self):
     return self._resource_pile
@@ -39,12 +47,43 @@ class GameFlow(object):
 
   def NextTurn(self):
     self._turn_index = self._turn_index + 1
-    self._NextPlayer()
+    if self._turn_index == self._setting.GetNumberOfTurns():
+      self._StartEndOfRoundFlow()
+    else:
+      self._NextPlayer()
+
+  def NextRound(self):
+    if self._EndOfRoundFlowDone():
+      self._NextPlayer()
+    else:
+      raise GameFlowError('Feeding is not done yet')
 
   def _NextPlayer(self):
     self._current_player_index = self._current_player_index + 1
     if self._current_player_index == len(self._players):
       self._current_player_index = 0
+
+  def _StartEndOfRoundFlow(self):
+    end_of_round = self._setting.GetEndOfRound(self._round_index)
+    self._CreateFeedHandler(end_of_round.food)
+
+  def _EndOfRoundFlowDone(self):
+    return self._feeding_handler.IsAllDone()
+
+  def _CreateFeedHandler(self, food_req):
+    self._feeding_handler = feeding_handler.FeedingHandler()
+    for player_index in xrange(len(self._players)):
+      player_obj = self._players[player_index]
+      picker_obj = resource_picker.CreateResourcePickerForFood(
+          player_obj.GetResource())
+      feeder_obj = feeder.CreateFeeder(player_obj, food_req, picker_obj)
+      self._feeding_handler.AddFeeder(player_obj.GetName(), feeder_obj)
+
+  def GetResourcePickerForPlayer(self, name):
+    return self._feeding_handler.GetResourcePicker(name)
+
+  def FeedWithPickedForPlayer(self, name):
+    self._feeding_handler.FeedWithPicked(name)
 
   def SetResourcePileForTest(self, res_pile):
     self._resource_pile = res_pile
