@@ -13,7 +13,7 @@ class TestGameFlow(unittest.TestCase):
   def setUp(self):
     self._flow = None
     self._number_of_players = None
-    self._gameGsetting = None
+    self._game_setting = None
     self._generate_res_list = None
 
   def _CreateGameFlow(self):

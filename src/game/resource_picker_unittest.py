@@ -42,7 +42,7 @@ class TestResourcePicker(unittest.TestCase):
 
 
 class TestCreateResourcePicker(unittest.TestCase):
-  def testCreateResourcePickerForFood(self):  
+  def testCreateResourcePickerForFood(self):
     res = resource.Resource(franc=1, fish=1, clay=1)
     picker_obj = resource_picker.CreateResourcePickerForFood(res)
     self.assertTrue(
