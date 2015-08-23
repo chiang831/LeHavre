@@ -13,3 +13,8 @@ class SimpleResourceViewer(object):
     for element in elements:
       output += '%s: %d\n' % (element.name, element.GetNumber())
     return output
+
+def ShowResource(res):
+  viewer = SimpleResourceViewer()
+  viewer.SetResource(res)
+  return viewer.Show()
