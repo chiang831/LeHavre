@@ -16,10 +16,11 @@ class GameFlow(object):
         setting.GetStartResourcesPilesDict())
     self._players = list()
     self._resource_generators = list()
-    self._turn_index = 0
-    self._current_player_index = 0
-    self._round_index = 0
+    self._turn_index = None
+    self._current_player_index = None
+    self._round_index = None
     self._feeding_handler = None
+    self._pending_action = None
 
   def GetResourcePile(self):
     return self._resource_pile
@@ -32,7 +33,18 @@ class GameFlow(object):
       if player_foo.GetName() == name:
         return player_foo
 
-  def StartingOffer(self):
+  def StartGame(self):
+    self._StartingOffer()
+    self._current_player_index = 0
+    self._turn_index = 0
+    self._round_index = 0
+    self._StartPlayerTurn()
+
+  def _StartPlayerTurn(self):
+    self._GenerateResource()
+    self._pending_action = True
+
+  def _StartingOffer(self):
     starting_offer_dict = self._setting.GetLongGameStartingOffer()
     starting_offer = resource.CreateResourceFromDict(starting_offer_dict)
     for player_foo in self._players:
@@ -41,20 +53,29 @@ class GameFlow(object):
   def SetResourceGenerators(self, res_gen_list):
     self._resource_generators = res_gen_list
 
-  def GenerateResource(self):
+  def _GenerateResource(self):
     self._resource_pile.Add(
         self._resource_generators[self._turn_index].GetResource())
 
   def NextTurn(self):
+    if self._pending_action:
+      raise GameFlowError('Player action not done yet')
+
     self._turn_index = self._turn_index + 1
     if self._turn_index == self._setting.GetNumberOfTurns():
       self._StartEndOfRoundFlow()
     else:
+      self._StartNextPlayerTurn()
+
+  def _StartNextPlayerTurn(self):
       self._NextPlayer()
+      self._StartPlayerTurn()
 
   def NextRound(self):
     if self._EndOfRoundFlowDone():
-      self._NextPlayer()
+      self._round_index = self._round_index + 1
+      self._turn_index = 0
+      self._StartNextPlayerTurn()
     else:
       raise GameFlowError('Feeding is not done yet')
 
@@ -76,11 +97,12 @@ class GameFlow(object):
       player_obj = self._players[player_index]
       picker_obj = resource_picker.CreateResourcePickerForFood(
           player_obj.GetResource())
+    # TODO show food requirement in feeder viewer.
       feeder_obj = feeder.CreateFeeder(player_obj, food_req, picker_obj)
       self._feeding_handler.AddFeeder(player_obj.GetName(), feeder_obj)
 
-  def GetResourcePickerForPlayer(self, name):
-    return self._feeding_handler.GetResourcePicker(name)
+  def GetFeederForPlayer(self, name):
+    return self._feeding_handler.GetFeeder(name)
 
   def FeedWithPickedForPlayer(self, name):
     self._feeding_handler.FeedWithPicked(name)
@@ -89,9 +111,16 @@ class GameFlow(object):
     self._resource_pile = res_pile
 
   def PlayerTakeResourceAction(self, res_name):
+    if not self._pending_action:
+      raise GameFlowError('Player has done the action')
     player = self.GetCurrentPlayer()
     action = take_resource_action.CreateTakeResourceAction(res_name)
     action.TakeAction(player, self.GetResourcePile())
+
+  def PlayerTakeDummyActionForTest(self):
+    if not self._pending_action:
+      raise GameFlowError('Player has done the action')
+    self._pending_action = False
 
   def GetCurrentPlayer(self):
     return self._players[self._current_player_index]

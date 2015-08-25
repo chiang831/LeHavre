@@ -47,7 +47,8 @@ class TestGameFlow(unittest.TestCase):
     name2 = 'Player2'
     player1 = self._CreateAndAddPlayer(name1)
     player2 = self._CreateAndAddPlayer(name2)
-    self._flow.StartingOffer()
+    self._SetGenerator()
+    self._StartGame()
     expected_resource = resource.CreateResourceFromDict(
         config.LONG_GAME_STARTING_OFFER)
     self.assertTrue(player1.GetResource().Equal(expected_resource))
@@ -79,15 +80,16 @@ class TestGameFlow(unittest.TestCase):
     self._number_of_players = 1
     self._CreateGameFlow()
     self._SetGenerator()
+    expected_res_pile = self._flow.GetResourcePile()
+    self._StartGame()
 
-    expected_res_pile = self._flow.GetResourcePile().Copy()
     for turn in xrange(self._game_setting.GetNumberOfTurns()):
       expected_res_pile.Add(self._generate_res_list[turn])
 
-      self._flow.GenerateResource()
       self.assertTrue(
           self._flow.GetResourcePile().Equal(expected_res_pile))
 
+      self._flow.PlayerTakeDummyActionForTest()
       self._flow.NextTurn()
 
   def testTakeResource(self):
@@ -96,10 +98,14 @@ class TestGameFlow(unittest.TestCase):
     res_pile = resource.Resource(franc=1, clay=2)
     name = 'Player1'
     player1 = self._CreateAndAddPlayer(name)
+    self._SetGenerator()
+    self._StartGame()
     self._flow.SetResourcePileForTest(res_pile)
+    expected_resource = player1.GetResource().Copy()
     self._flow.PlayerTakeResourceAction('franc')
-    self.assertTrue(player1.GetResource().Equal(
-        resource.Resource(franc=1)))
+    expected_resource.Add(resource.Resource(franc=1))
+    self.assertTrue(player1.GetResource().Equal(expected_resource))
+        
 
   def testGetCurrentPlayer(self):
     self._number_of_players = 2
@@ -108,12 +114,19 @@ class TestGameFlow(unittest.TestCase):
     name2 = 'Player2'
     player1 = self._CreateAndAddPlayer(name1)
     player2 = self._CreateAndAddPlayer(name2)
+    self._SetGenerator()
+    self._StartGame()
     self.assertEqual(self._flow.GetCurrentPlayer(), player1)
+    self._flow.PlayerTakeDummyActionForTest()
     self._flow.NextTurn()
     self.assertEqual(self._flow.GetCurrentPlayer(), player2)
 
+  def _StartGame(self):
+    self._flow.StartGame()
+
   def _PlayOneRound(self):
     for _ in xrange(self._game_setting.GetNumberOfTurns()):
+      self._flow.PlayerTakeDummyActionForTest()
       self._flow.NextTurn()
 
   def testNotFeedYet(self):
@@ -123,6 +136,7 @@ class TestGameFlow(unittest.TestCase):
     player1 = self._CreateAndAddPlayer(name1)
     player1.AddResource(resource.Resource(franc=2, fish=3))
     self._SetGenerator()
+    self._StartGame()
     self._PlayOneRound()
 
     # Has not pick resource and not call FeedWithPickedForPlayer yet.
@@ -136,10 +150,11 @@ class TestGameFlow(unittest.TestCase):
     player1 = self._CreateAndAddPlayer(name1)
     player1.AddResource(resource.Resource(franc=2, fish=3))
     self._SetGenerator()
+    self._StartGame()
     self._PlayOneRound()
 
     # Let player1 feed for end of round food.
-    picker = self._flow.GetResourcePickerForPlayer(name1)
+    picker = self._flow.GetFeederForPlayer(name1).GetResourcePicker()
     picker.Pick(franc=2, fish=3)
     self._flow.FeedWithPickedForPlayer(name1)
 
