@@ -10,8 +10,8 @@ class FeedingHandler(object):
     self._name_feeder_dict[player_name] = feeder_obj
     self._name_success_dict[player_name] = False
 
-  def GetResourcePicker(self, name):
-    return self._name_feeder_dict[name].GetResourcePicker()
+  def GetFeeder(self, player_name):
+    return self._name_feeder_dict[player_name]
 
   def FeedWithPicked(self, name):
     # A player should only feed once.
