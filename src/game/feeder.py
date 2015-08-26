@@ -25,6 +25,9 @@ class Feeder(object):
     self._food_req = food_requirement
     self._food_checker = food_checker.FoodChecker(self._food_req)
 
+  def GetFoodRequirement(self):
+    return self._food_req
+
   def GetResourcePicker(self):
     return self._resource_picker
 

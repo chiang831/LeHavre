@@ -69,6 +69,12 @@ class TestFeeder(unittest.TestCase):
         self._player.GetResource().Equal(
             resource.Resource(loan=1, franc=2)))
 
+  def TestGetFoodRequirement(self):
+    self._food_req = 2
+    self._SetFoodAndPlayer()
+    self.assertEqual(self._food_req, self._feeder.GetFoodRequirement())
+
+
 class TestCreateFeeder(unittest.TestCase):
   # pylint: disable=W0212
   def testCreateFeeder(self):
