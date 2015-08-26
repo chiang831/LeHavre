@@ -143,6 +143,10 @@ class TestGameFlow(unittest.TestCase):
     with self.assertRaises(game_flow.GameFlowError):
       self._flow.NextRound()
 
+    # Has not finish feed yet.
+    with self.assertRaises(game_flow.GameFlowError):
+      self._flow.NextTurn()
+
   def testFeed(self):
     name1 = 'Player1'
     self._number_of_players = 1

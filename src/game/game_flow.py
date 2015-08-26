@@ -21,6 +21,7 @@ class GameFlow(object):
     self._round_index = None
     self._feeding_handler = None
     self._pending_action = None
+    self._pending_end_of_round = None
 
   def GetResourcePile(self):
     return self._resource_pile
@@ -58,6 +59,9 @@ class GameFlow(object):
         self._resource_generators[self._turn_index].GetResource())
 
   def NextTurn(self):
+    if self._pending_end_of_round:
+      raise GameFlowError('Pending end of round')
+
     if self._pending_action:
       raise GameFlowError('Player action not done yet')
 
@@ -75,6 +79,7 @@ class GameFlow(object):
     if self._EndOfRoundFlowDone():
       self._round_index = self._round_index + 1
       self._turn_index = 0
+      self._pending_end_of_round = False
       self._StartNextPlayerTurn()
     else:
       raise GameFlowError('Feeding is not done yet')
@@ -87,6 +92,7 @@ class GameFlow(object):
   def _StartEndOfRoundFlow(self):
     end_of_round = self._setting.GetEndOfRound(self._round_index)
     self._CreateFeedHandler(end_of_round.food)
+    self._pending_end_of_round = True
 
   def _EndOfRoundFlowDone(self):
     return self._feeding_handler.IsAllDone()
@@ -116,6 +122,7 @@ class GameFlow(object):
     player = self.GetCurrentPlayer()
     action = take_resource_action.CreateTakeResourceAction(res_name)
     action.TakeAction(player, self.GetResourcePile())
+    self._pending_action = False
 
   def PlayerTakeDummyActionForTest(self):
     if not self._pending_action:
