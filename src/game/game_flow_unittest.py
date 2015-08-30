@@ -105,7 +105,6 @@ class TestGameFlow(unittest.TestCase):
     self._flow.PlayerTakeResourceAction('franc')
     expected_resource.Add(resource.Resource(franc=1))
     self.assertTrue(player1.GetResource().Equal(expected_resource))
-        
 
   def testGetCurrentPlayer(self):
     self._number_of_players = 2

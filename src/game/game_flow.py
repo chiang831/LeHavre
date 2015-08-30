@@ -72,8 +72,8 @@ class GameFlow(object):
       self._StartNextPlayerTurn()
 
   def _StartNextPlayerTurn(self):
-      self._NextPlayer()
-      self._StartPlayerTurn()
+    self._NextPlayer()
+    self._StartPlayerTurn()
 
   def NextRound(self):
     if self._EndOfRoundFlowDone():
