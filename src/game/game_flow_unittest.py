@@ -14,16 +14,21 @@ class TestGameFlow(unittest.TestCase):
     self._flow = None
     self._number_of_players = None
     self._game_setting = None
+    self._players = None
     self._generate_res_list = None
 
   def _CreateGameFlow(self):
     self._game_setting = game_setting.GameSetting(self._number_of_players)
     self._flow = game_flow.CreateGameFlow(self._game_setting)
 
-  def _CreateAndAddPlayer(self, name):
-    player1 = player.Player(name)
-    self._flow.AddPlayer(player1)
-    return player1
+  def _CreateAndSetPlayers(self):
+    self._players = list()
+    for index in xrange(self._number_of_players):
+      name = 'Player' + str(index + 1)
+      player_obj = player.Player(name)
+      self._players.append(player_obj)
+
+    self._flow.SetPlayers(self._players)
 
   def testGameFlowStartingResourcePile(self):
     self._number_of_players = 1
@@ -33,20 +38,21 @@ class TestGameFlow(unittest.TestCase):
     self.assertTrue(
         self._flow.GetResourcePile().Equal(expected_resource_pile))
 
-  def testGameFlowAddPlayer(self):
-    self._number_of_players = 1
+  def testGameFlowSetPlayers(self):
+    self._number_of_players = 2
     self._CreateGameFlow()
-    name = 'Player1'
-    self._CreateAndAddPlayer(name)
-    self.assertEqual(name, self._flow.GetPlayer(name).GetName())
+    self._CreateAndSetPlayers()
+    player1 = self._players[0]
+    player2 = self._players[1]
+    self.assertEqual(player1, self._flow.GetPlayer(player1.GetName()))
+    self.assertEqual(player2, self._flow.GetPlayer(player2.GetName()))
 
   def testGameStartingOffer(self):
     self._number_of_players = 2
     self._CreateGameFlow()
-    name1 = 'Player1'
-    name2 = 'Player2'
-    player1 = self._CreateAndAddPlayer(name1)
-    player2 = self._CreateAndAddPlayer(name2)
+    self._CreateAndSetPlayers()
+    player1 = self._players[0]
+    player2 = self._players[1]
     self._SetGenerator()
     self._StartGame()
     expected_resource = resource.CreateResourceFromDict(
@@ -79,6 +85,7 @@ class TestGameFlow(unittest.TestCase):
   def testResourceGenerator(self):
     self._number_of_players = 1
     self._CreateGameFlow()
+    self._CreateAndSetPlayers()
     self._SetGenerator()
     expected_res_pile = self._flow.GetResourcePile()
     self._StartGame()
@@ -96,8 +103,8 @@ class TestGameFlow(unittest.TestCase):
     self._number_of_players = 1
     self._CreateGameFlow()
     res_pile = resource.Resource(franc=1, clay=2)
-    name = 'Player1'
-    player1 = self._CreateAndAddPlayer(name)
+    self._CreateAndSetPlayers()
+    player1 = self._players[0]
     self._SetGenerator()
     self._StartGame()
     self._flow.SetResourcePileForTest(res_pile)
@@ -111,7 +118,8 @@ class TestGameFlow(unittest.TestCase):
     self._CreateGameFlow()
     res_pile = resource.Resource(franc=1, clay=2)
     name = 'Player1'
-    player1 = self._CreateAndAddPlayer(name)
+    self._CreateAndSetPlayers()
+    player1 = self._players[0]
     self._SetGenerator()
     self._StartGame()
     self._PlayOneRound()
@@ -121,10 +129,9 @@ class TestGameFlow(unittest.TestCase):
   def testGetCurrentPlayer(self):
     self._number_of_players = 2
     self._CreateGameFlow()
-    name1 = 'Player1'
-    name2 = 'Player2'
-    player1 = self._CreateAndAddPlayer(name1)
-    player2 = self._CreateAndAddPlayer(name2)
+    self._CreateAndSetPlayers()
+    player1 = self._players[0]
+    player2 = self._players[1]
     self._SetGenerator()
     self._StartGame()
     self.assertEqual(self._flow.GetCurrentPlayer(), player1)
@@ -141,10 +148,10 @@ class TestGameFlow(unittest.TestCase):
       self._flow.NextTurn()
 
   def testNotFeedYet(self):
-    name1 = 'Player1'
     self._number_of_players = 1
     self._CreateGameFlow()
-    player1 = self._CreateAndAddPlayer(name1)
+    self._CreateAndSetPlayers()
+    player1 = self._players[0]
     player1.AddResource(resource.Resource(franc=2, fish=3))
     self._SetGenerator()
     self._StartGame()
@@ -159,10 +166,11 @@ class TestGameFlow(unittest.TestCase):
       self._flow.NextTurn()
 
   def testFeed(self):
-    name1 = 'Player1'
     self._number_of_players = 1
     self._CreateGameFlow()
-    player1 = self._CreateAndAddPlayer(name1)
+    self._CreateAndSetPlayers()
+    player1 = self._players[0]
+    name1 = player1.GetName()
     player1.AddResource(resource.Resource(franc=2, fish=3))
     self._SetGenerator()
     self._StartGame()
@@ -177,10 +185,10 @@ class TestGameFlow(unittest.TestCase):
     self._flow.NextRound()
 
   def testNotYetNextRound(self):
-    name1 = 'Player1'
     self._number_of_players = 1
     self._CreateGameFlow()
-    player1 = self._CreateAndAddPlayer(name1)
+    self._CreateAndSetPlayers()
+    player1 = self._players[0]
     self._SetGenerator()
     self._StartGame()
 
@@ -189,10 +197,10 @@ class TestGameFlow(unittest.TestCase):
       self._flow.NextRound()
 
   def testGetCurrentTurn(self):
-    name1 = 'Player1'
     self._number_of_players = 1
     self._CreateGameFlow()
-    player1 = self._CreateAndAddPlayer(name1)
+    self._CreateAndSetPlayers()
+    player1 = self._players[0]
     self._SetGenerator()
     self._StartGame()
     self.assertEqual(self._flow.GetCurrentTurn(), 0)
@@ -201,10 +209,11 @@ class TestGameFlow(unittest.TestCase):
     self.assertEqual(self._flow.GetCurrentTurn(), 1)
 
   def testGetCurrentRound(self):
-    name1 = 'Player1'
     self._number_of_players = 1
     self._CreateGameFlow()
-    player1 = self._CreateAndAddPlayer(name1)
+    self._CreateAndSetPlayers()
+    player1 = self._players[0]
+    name1 = player1.GetName()
     self._SetGenerator()
     self._StartGame()
     self.assertEqual(self._flow.GetCurrentRound(), 0)

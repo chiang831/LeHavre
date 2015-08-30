@@ -6,8 +6,29 @@ import take_resource_action
 import resource
 import resource_picker
 
+class GameState(object):
+  PENDING_ADD_PLAYERS = 'State: Pending adding players'
+  PENDING_SET_RESOURCE_GENERATORS = 'State: Pending setting resource generators'
+  PENDING_START_GAME = 'State: Pending start game'
+  PENDING_USER_ACTION = 'State: Pending user action'
+  PENDING_USER_DONE = 'State: Pending user done'
+  PENDING_FEEDING = 'State: Pending feeding'
+  PENDING_START_NEXT_ROUND = 'State: Pending start of next round'
+
+
 class GameFlowError(Exception):
   pass
+
+
+def CheckState(state):
+  def CheckStateDecorator(function):
+    def FunctionWithStateCheck(self, *args, **kwargs):
+      if self._state != state:
+        raise GameFlowError('Game state %s != %s' % (self._state, state))
+      return function(self, *args, **kwargs)
+    return FunctionWithStateCheck
+  return CheckStateDecorator
+
 
 class GameFlow(object):
   def __init__(self, setting):
@@ -20,20 +41,22 @@ class GameFlow(object):
     self._current_player_index = None
     self._round_index = None
     self._feeding_handler = None
-    self._pending_action = None
-    self._pending_end_of_round = None
+    self._state = GameState.PENDING_ADD_PLAYERS 
 
   def GetResourcePile(self):
     return self._resource_pile
 
-  def AddPlayer(self, new_player):
-    self._players.append(new_player)
+  @CheckState(GameState.PENDING_ADD_PLAYERS)
+  def SetPlayers(self, players):
+    self._players = players
+    self._state = GameState.PENDING_SET_RESOURCE_GENERATORS
 
   def GetPlayer(self, name):
     for player_foo in self._players:
       if player_foo.GetName() == name:
         return player_foo
 
+  @CheckState(GameState.PENDING_START_GAME)
   def StartGame(self):
     self._StartingOffer()
     self._current_player_index = 0
@@ -43,7 +66,7 @@ class GameFlow(object):
 
   def _StartPlayerTurn(self):
     self._GenerateResource()
-    self._pending_action = True
+    self._state = GameState.PENDING_USER_ACTION
 
   def _StartingOffer(self):
     starting_offer_dict = self._setting.GetLongGameStartingOffer()
@@ -51,20 +74,17 @@ class GameFlow(object):
     for player_foo in self._players:
       player_foo.AddResource(starting_offer)
 
+  @CheckState(GameState.PENDING_SET_RESOURCE_GENERATORS)
   def SetResourceGenerators(self, res_gen_list):
     self._resource_generators = res_gen_list
+    self._state = GameState.PENDING_START_GAME
 
   def _GenerateResource(self):
     self._resource_pile.Add(
         self._resource_generators[self._turn_index].GetResource())
 
+  @CheckState(GameState.PENDING_USER_DONE)
   def NextTurn(self):
-    if self._pending_end_of_round:
-      raise GameFlowError('Pending end of round')
-
-    if self._pending_action:
-      raise GameFlowError('Player action not done yet')
-
     self._turn_index = self._turn_index + 1
     if self._turn_index == self._setting.GetNumberOfTurns():
       self._StartEndOfRoundFlow()
@@ -75,16 +95,11 @@ class GameFlow(object):
     self._NextPlayer()
     self._StartPlayerTurn()
 
+  @CheckState(GameState.PENDING_START_NEXT_ROUND)
   def NextRound(self):
-    if not self._pending_end_of_round:
-      raise GameFlowError('Not in end of round')
-    if self._EndOfRoundFlowDone():
-      self._round_index = self._round_index + 1
-      self._turn_index = 0
-      self._pending_end_of_round = False
-      self._StartNextPlayerTurn()
-    else:
-      raise GameFlowError('Feeding is not done yet')
+    self._round_index = self._round_index + 1
+    self._turn_index = 0
+    self._StartNextPlayerTurn()
 
   def _NextPlayer(self):
     self._current_player_index = self._current_player_index + 1
@@ -94,10 +109,7 @@ class GameFlow(object):
   def _StartEndOfRoundFlow(self):
     end_of_round = self._setting.GetEndOfRound(self._round_index)
     self._CreateFeedHandler(end_of_round.food)
-    self._pending_end_of_round = True
-
-  def _EndOfRoundFlowDone(self):
-    return self._feeding_handler.IsAllDone()
+    self._state = GameState.PENDING_FEEDING
 
   def _CreateFeedHandler(self, food_req):
     self._feeding_handler = feeding_handler.FeedingHandler()
@@ -108,29 +120,29 @@ class GameFlow(object):
       feeder_obj = feeder.CreateFeeder(player_obj, food_req, picker_obj)
       self._feeding_handler.AddFeeder(player_obj.GetName(), feeder_obj)
 
+  @CheckState(GameState.PENDING_FEEDING)
   def GetFeederForPlayer(self, name):
     return self._feeding_handler.GetFeeder(name)
 
+  @CheckState(GameState.PENDING_FEEDING)
   def FeedWithPickedForPlayer(self, name):
     self._feeding_handler.FeedWithPicked(name)
+    if self._feeding_handler.IsAllDone():
+      self._state = GameState.PENDING_START_NEXT_ROUND
 
   def SetResourcePileForTest(self, res_pile):
     self._resource_pile = res_pile
 
+  @CheckState(GameState.PENDING_USER_ACTION)
   def PlayerTakeResourceAction(self, res_name):
-    if self._pending_end_of_round:
-      raise GameFlowError('In the end of round')
-    if not self._pending_action:
-      raise GameFlowError('Player has done the action')
     player = self.GetCurrentPlayer()
     action = take_resource_action.CreateTakeResourceAction(res_name)
     action.TakeAction(player, self.GetResourcePile())
-    self._pending_action = False
+    self._state = GameState.PENDING_USER_DONE
 
+  @CheckState(GameState.PENDING_USER_ACTION)
   def PlayerTakeDummyActionForTest(self):
-    if not self._pending_action:
-      raise GameFlowError('Player has done the action')
-    self._pending_action = False
+    self._state = GameState.PENDING_USER_DONE
 
   def GetCurrentPlayer(self):
     return self._players[self._current_player_index]
