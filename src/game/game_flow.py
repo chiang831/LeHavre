@@ -103,7 +103,6 @@ class GameFlow(object):
       player_obj = self._players[player_index]
       picker_obj = resource_picker.CreateResourcePickerForFood(
           player_obj.GetResource())
-    # TODO show food requirement in feeder viewer.
       feeder_obj = feeder.CreateFeeder(player_obj, food_req, picker_obj)
       self._feeding_handler.AddFeeder(player_obj.GetName(), feeder_obj)
 
