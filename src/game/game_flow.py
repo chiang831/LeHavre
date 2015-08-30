@@ -118,6 +118,8 @@ class GameFlow(object):
     self._resource_pile = res_pile
 
   def PlayerTakeResourceAction(self, res_name):
+    if self._pending_end_of_round:
+      raise GameFlowError('In the end of round')
     if not self._pending_action:
       raise GameFlowError('Player has done the action')
     player = self.GetCurrentPlayer()

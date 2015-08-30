@@ -106,6 +106,18 @@ class TestGameFlow(unittest.TestCase):
     expected_resource.Add(resource.Resource(franc=1))
     self.assertTrue(player1.GetResource().Equal(expected_resource))
 
+  def testCanNotTakeResourceInEndOfRound(self):
+    self._number_of_players = 1
+    self._CreateGameFlow()
+    res_pile = resource.Resource(franc=1, clay=2)
+    name = 'Player1'
+    player1 = self._CreateAndAddPlayer(name)
+    self._SetGenerator()
+    self._StartGame()
+    self._PlayOneRound()
+    with self.assertRaises(game_flow.GameFlowError):
+      self._flow.PlayerTakeResourceAction('franc')
+
   def testGetCurrentPlayer(self):
     self._number_of_players = 2
     self._CreateGameFlow()
