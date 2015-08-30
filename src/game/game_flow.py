@@ -135,5 +135,12 @@ class GameFlow(object):
   def GetCurrentPlayer(self):
     return self._players[self._current_player_index]
 
+  def GetCurrentTurn(self):
+    return self._turn_index
+
+  def GetCurrentRound(self):
+    return self._round_index
+
+
 def CreateGameFlow(setting):
   return GameFlow(setting)

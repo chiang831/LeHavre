@@ -188,5 +188,39 @@ class TestGameFlow(unittest.TestCase):
     with self.assertRaises(game_flow.GameFlowError):
       self._flow.NextRound()
 
+  def testGetCurrentTurn(self):
+    name1 = 'Player1'
+    self._number_of_players = 1
+    self._CreateGameFlow()
+    player1 = self._CreateAndAddPlayer(name1)
+    self._SetGenerator()
+    self._StartGame()
+    self.assertEqual(self._flow.GetCurrentTurn(), 0)
+    self._flow.PlayerTakeDummyActionForTest()
+    self._flow.NextTurn()
+    self.assertEqual(self._flow.GetCurrentTurn(), 1)
+
+  def testGetCurrentRound(self):
+    name1 = 'Player1'
+    self._number_of_players = 1
+    self._CreateGameFlow()
+    player1 = self._CreateAndAddPlayer(name1)
+    self._SetGenerator()
+    self._StartGame()
+    self.assertEqual(self._flow.GetCurrentRound(), 0)
+
+    # Let player1 get enough resource in the first round.
+    player1.AddResource(resource.Resource(franc=2, fish=3))
+    self._PlayOneRound()
+
+    # Let player1 feed for end of round food.
+    picker = self._flow.GetFeederForPlayer(name1).GetResourcePicker()
+    picker.Pick(franc=2, fish=3)
+    self._flow.FeedWithPickedForPlayer(name1)
+    self._flow.NextRound()
+
+    self.assertEqual(self._flow.GetCurrentRound(), 1)
+
+
 if __name__ == '__main__':
   unittest.main()
