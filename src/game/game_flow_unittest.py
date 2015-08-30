@@ -164,5 +164,17 @@ class TestGameFlow(unittest.TestCase):
     # Can enter next round
     self._flow.NextRound()
 
+  def testNotYetNextRound(self):
+    name1 = 'Player1'
+    self._number_of_players = 1
+    self._CreateGameFlow()
+    player1 = self._CreateAndAddPlayer(name1)
+    self._SetGenerator()
+    self._StartGame()
+
+    # Can not enter next round
+    with self.assertRaises(game_flow.GameFlowError):
+      self._flow.NextRound()
+
 if __name__ == '__main__':
   unittest.main()

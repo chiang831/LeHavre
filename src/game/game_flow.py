@@ -76,6 +76,8 @@ class GameFlow(object):
     self._StartPlayerTurn()
 
   def NextRound(self):
+    if not self._pending_end_of_round:
+      raise GameFlowError('Not in end of round')
     if self._EndOfRoundFlowDone():
       self._round_index = self._round_index + 1
       self._turn_index = 0
