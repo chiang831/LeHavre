@@ -8,9 +8,16 @@ import resource
 class ResourceGenerator(object):
   def __init__(self, res):
     self._resource = res
+    self._visible = False
 
   def GetResource(self):
     return self._resource
+
+  def IsVisible(self):
+    return self._visible
+
+  def SetVisible(self):
+    self._visible = True
 
 
 def GetShuffledResourceGenerators():

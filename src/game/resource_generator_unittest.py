@@ -7,11 +7,28 @@ import resource
 import resource_generator
 
 class TestResourceGenerator(unittest.TestCase):
-  def testGetResource(self):
+  def setUp(self):
+    self._generator = None
+    self._res = None
+
+  def _CreateTestGenerator(self):
     res_dict = dict(franc=1, wood=1)
-    res = resource.CreateResourceFromDict(res_dict)
-    generator = resource_generator.ResourceGenerator(res)
-    self.assertTrue(generator.GetResource().Equal(res))
+    self._res = resource.CreateResourceFromDict(res_dict)
+    self._generator = resource_generator.ResourceGenerator(self._res)
+
+  def testGetResource(self):
+    self._CreateTestGenerator()
+    self.assertTrue(self._generator.GetResource().Equal(self._res))
+
+  def testIsVisible(self):
+    self._CreateTestGenerator()
+    self.assertFalse(self._generator.IsVisible())
+
+  def testSetVisible(self):
+    self._CreateTestGenerator()
+    self.assertFalse(self._generator.IsVisible())
+    self._generator.SetVisible()
+    self.assertTrue(self._generator.IsVisible())
 
 
 class TestGetShuffledResourceGenerators(unittest.TestCase):
