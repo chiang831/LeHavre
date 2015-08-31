@@ -22,6 +22,7 @@ class GameFlowError(Exception):
 
 def CheckState(state):
   def CheckStateDecorator(function):
+    # pylint: disable=W0212
     def FunctionWithStateCheck(self, *args, **kwargs):
       if self._state != state:
         raise GameFlowError('Game state %s != %s' % (self._state, state))
@@ -41,7 +42,7 @@ class GameFlow(object):
     self._current_player_index = None
     self._round_index = None
     self._feeding_handler = None
-    self._state = GameState.PENDING_ADD_PLAYERS 
+    self._state = GameState.PENDING_ADD_PLAYERS
 
   def GetResourcePile(self):
     return self._resource_pile

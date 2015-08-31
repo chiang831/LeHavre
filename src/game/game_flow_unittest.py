@@ -116,10 +116,7 @@ class TestGameFlow(unittest.TestCase):
   def testCanNotTakeResourceInEndOfRound(self):
     self._number_of_players = 1
     self._CreateGameFlow()
-    res_pile = resource.Resource(franc=1, clay=2)
-    name = 'Player1'
     self._CreateAndSetPlayers()
-    player1 = self._players[0]
     self._SetGenerator()
     self._StartGame()
     self._PlayOneRound()
@@ -188,7 +185,6 @@ class TestGameFlow(unittest.TestCase):
     self._number_of_players = 1
     self._CreateGameFlow()
     self._CreateAndSetPlayers()
-    player1 = self._players[0]
     self._SetGenerator()
     self._StartGame()
 
@@ -200,7 +196,6 @@ class TestGameFlow(unittest.TestCase):
     self._number_of_players = 1
     self._CreateGameFlow()
     self._CreateAndSetPlayers()
-    player1 = self._players[0]
     self._SetGenerator()
     self._StartGame()
     self.assertEqual(self._flow.GetCurrentTurn(), 0)
