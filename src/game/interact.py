@@ -9,6 +9,8 @@ import resource_generator
 import simple_resource_viewer
 import simple_player_viewer
 import simple_feeder_viewer
+import simple_resource_generator_viewer
+import simple_flow_viewer
 
 #TODO: Add unittest for this module.
 
@@ -47,6 +49,7 @@ class InteractShell(object):
     self._flow.StartGame()
 
   def ShowResourcePile(self):
+    print 'Resource piles:'
     print simple_resource_viewer.ShowResource(self._flow.GetResourcePile())
 
   def ShowPlayers(self):
@@ -72,6 +75,21 @@ class InteractShell(object):
 
   def NextRound(self):
     self._flow.NextRound()
+
+  def ShowFlow(self):
+    flow_viewer = simple_flow_viewer.SimpleFlowViewer(self._flow)
+    print flow_viewer.Show()
+
+  def ShowGenerators(self):
+    generator_viewer = simple_resource_generator_viewer.\
+        SimpleResourceGeneratorsViewer(self._flow.GetResourceGenerators())
+    print generator_viewer.Show()
+
+  def ShowAll(self):
+    self.ShowFlow()
+    self.ShowGenerators()
+    self.ShowResourcePile()
+    self.ShowPlayers()
 
 
 # pylint: disable=C0103
