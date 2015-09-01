@@ -1,5 +1,6 @@
 """Interact console for testing."""
 import code
+import readline
 
 import player
 import game_setting
@@ -93,6 +94,7 @@ class InteractShell(object):
 
 
 # pylint: disable=C0103
+readline.parse_and_bind("tab: complete")
 p = InteractShell()
 variables = globals().copy()
 variables.update(locals())
