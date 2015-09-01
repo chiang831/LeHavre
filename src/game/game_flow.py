@@ -43,6 +43,7 @@ class GameFlow(object):
     self._round_index = None
     self._feeding_handler = None
     self._state = GameState.PENDING_ADD_PLAYERS
+    self._end_of_round = None
 
   def GetResourcePile(self):
     return self._resource_pile
@@ -63,9 +64,17 @@ class GameFlow(object):
     self._current_player_index = 0
     self._turn_index = 0
     self._round_index = 0
+    self._GetEndOfRound()
     self._StartPlayerTurn()
 
+  def _GetEndOfRound(self):
+    self._end_of_round = self._setting.GetEndOfRound(self._round_index)
+
+  def _SetGeneratorVisible(self):
+    self._resource_generators[self._turn_index].SetVisible()
+
   def _StartPlayerTurn(self):
+    self._SetGeneratorVisible()
     self._GenerateResource()
     self._state = GameState.PENDING_USER_ACTION
 
@@ -99,6 +108,7 @@ class GameFlow(object):
   @CheckState(GameState.PENDING_START_NEXT_ROUND)
   def NextRound(self):
     self._round_index = self._round_index + 1
+    self._GetEndOfRound()
     self._turn_index = 0
     self._StartNextPlayerTurn()
 
@@ -108,8 +118,7 @@ class GameFlow(object):
       self._current_player_index = 0
 
   def _StartEndOfRoundFlow(self):
-    end_of_round = self._setting.GetEndOfRound(self._round_index)
-    self._CreateFeedHandler(end_of_round.food)
+    self._CreateFeedHandler(self._end_of_round.food)
     self._state = GameState.PENDING_FEEDING
 
   def _CreateFeedHandler(self, food_req):
@@ -153,6 +162,16 @@ class GameFlow(object):
 
   def GetCurrentRound(self):
     return self._round_index
+
+  def GetResourceGenerators(self):
+    return self._resource_generators
+
+  def GetThisRoundFoodRequirement(self):
+    return self._end_of_round.food
+
+  def GetGameState(self):
+    return self._state
+
 
 
 def CreateGameFlow(setting):

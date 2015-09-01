@@ -225,6 +225,68 @@ class TestGameFlow(unittest.TestCase):
 
     self.assertEqual(self._flow.GetCurrentRound(), 1)
 
+  def testGetGameState(self):
+    self._number_of_players = 1
+    self._CreateGameFlow()
+    self.assertEqual(
+        self._flow.GetGameState(), game_flow.GameState.PENDING_ADD_PLAYERS)
+
+    self._CreateAndSetPlayers()
+    player1 = self._players[0]
+    name1 = player1.GetName()
+    self.assertEqual(
+        self._flow.GetGameState(),
+        game_flow.GameState.PENDING_SET_RESOURCE_GENERATORS)
+
+    self._SetGenerator()
+    self.assertEqual(
+        self._flow.GetGameState(), game_flow.GameState.PENDING_START_GAME)
+
+    self._StartGame()
+    self.assertEqual(
+        self._flow.GetGameState(), game_flow.GameState.PENDING_USER_ACTION)
+
+    self._flow.PlayerTakeDummyActionForTest()
+    self.assertEqual(
+        self._flow.GetGameState(), game_flow.GameState.PENDING_USER_DONE)
+
+    self._flow.NextTurn()
+
+    # Let player1 get enough resource in the first round.
+    player1.AddResource(resource.Resource(franc=2, fish=3))
+
+    for _ in xrange(6):
+      self._flow.PlayerTakeDummyActionForTest()
+      self._flow.NextTurn()
+
+    self.assertEqual(
+        self._flow.GetGameState(), game_flow.GameState.PENDING_FEEDING)
+
+    # Let player1 feed for end of round food.
+    picker = self._flow.GetFeederForPlayer(name1).GetResourcePicker()
+    picker.Pick(franc=2, fish=3)
+    self._flow.FeedWithPickedForPlayer(name1)
+    self.assertEqual(
+        self._flow.GetGameState(), game_flow.GameState.PENDING_START_NEXT_ROUND)
+
+    self._flow.NextRound()
+
+  def testGeneratorVisible(self):
+    self._number_of_players = 1
+    self._CreateGameFlow()
+    self._CreateAndSetPlayers()
+    player1 = self._players[0]
+    name1 = player1.GetName()
+    self._SetGenerator()
+
+    self._generators = self._flow.GetResourceGenerators()
+    self.assertFalse(self._generators[0].IsVisible())
+    self._StartGame()
+    for turn in xrange(7):
+      self.assertTrue(self._generators[turn].IsVisible())
+      self._flow.PlayerTakeDummyActionForTest()
+      self._flow.NextTurn()
+
 
 if __name__ == '__main__':
   unittest.main()
