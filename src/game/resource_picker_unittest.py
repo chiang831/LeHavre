@@ -40,6 +40,23 @@ class TestResourcePicker(unittest.TestCase):
         self._picker.GetAvailableResource().Equal(
             resource.Resource(franc=1, fish=1)))
 
+  def testUnpick(self):
+    self._picker.SetAvailableResource(resource.Resource(franc=2, fish=1))
+    self._picker.Pick(franc=2)
+    self._picker.Pick(fish=1)
+    self._picker.Unpick(franc=1)
+    self.assertTrue(
+        self._picker.GetPicked().Equal(resource.Resource(franc=1, fish=1)))
+
+  def testInvalidUnpick(self):
+    self._picker.SetAvailableResource(resource.Resource(franc=2, fish=1))
+    with self.assertRaises(resource_picker.ResourcePickerError):
+      self._picker.Unpick(franc=1)
+
+    self._picker.Pick(franc=1)
+    with self.assertRaises(resource_picker.ResourcePickerError):
+      self._picker.Unpick(franc=2)
+
 
 class TestCreateResourcePicker(unittest.TestCase):
   def testCreateResourcePickerForFood(self):

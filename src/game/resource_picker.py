@@ -25,11 +25,16 @@ class ResourcePicker(object):
   def _CanPick(self, resource_to_pick):
     total_picked = self._picked_resource.Copy()
     total_picked.Add(resource_to_pick)
-    for key, elem in total_picked.GetNonZeroResourceElementDict().iteritems():
-      available_value = self._available.GetResourceNumberByName(key)
-      if elem.GetNumber() > available_value:
-        return False
-    return True
+    return self._available.GreaterThan(total_picked)
+
+  def Unpick(self, **kwargs):
+    resource_to_unpick = resource.Resource(**kwargs)
+    if not self._CanUnpick(resource_to_unpick):
+      raise ResourcePickerError('Can not unpick resource: %r' % kwargs)
+    self._picked_resource.Subtract(resource_to_unpick)
+
+  def _CanUnpick(self, resource_to_unpick):
+    return self._picked_resource.GreaterThan(resource_to_unpick)
 
   def GetPicked(self):
     return self._picked_resource
