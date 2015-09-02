@@ -88,6 +88,18 @@ class TestResource(unittest.TestCase):
     self.assertTrue(res_1.Equal(res_2))
     self.assertNotEqual(res_1, res_2)
 
+  def testGreaterThan(self):
+    res_1 = resource.Resource(franc=2, fish=2)
+    res_2 = resource.Resource(franc=1, fish=3)
+    res_3 = resource.Resource(franc=2, fish=3)
+    res_4 = resource.Resource(franc=3)
+    self.assertFalse(res_1.GreaterThan(res_2))
+    self.assertFalse(res_1.GreaterThan(res_3))
+    self.assertFalse(res_1.GreaterThan(res_4))
+    self.assertFalse(res_2.GreaterThan(res_1))
+    self.assertTrue(res_3.GreaterThan(res_1))
+    self.assertFalse(res_4.GreaterThan(res_1))
+
 
 class TestGetResource(unittest.TestCase):
   def setUp(self):

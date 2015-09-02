@@ -46,6 +46,12 @@ class Resource(object):
   def Copy(self):
     return CreateResourceFromDict(self.GetNonZeroResourceNumberDict())
 
+  def GreaterThan(self, other):
+    for key, value in other.GetNonZeroResourceNumberDict().iteritems():
+      if self._resource_dict[key].GetNumber() < value:
+        return False
+    return True
+
   def GetNonZeroResourceNumberDict(self):
     ret = dict()
     for key in self._resource_dict.keys():
