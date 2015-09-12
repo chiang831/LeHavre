@@ -28,8 +28,8 @@ class TestFoodChecker(unittest.TestCase):
     with self.assertRaises(food_checker.FoodTooMuchError):
       self._food_checker.Check(picked_res)
 
-  def testCheckTooMuchButNeededMeal(self):
-    picked_res = resource.Resource(meal=1)
+  def testCheckTooMuchButNeededMeat(self):
+    picked_res = resource.Resource(meat=1)
     self.assertTrue(self._food_checker.Check(picked_res))
 
   def testCheckTooMuchButNeededBread(self):

@@ -9,7 +9,7 @@ class Resource(object):
   def __init__(self, franc=0, fish=0, wood=0, clay=0, iron=0,
                grain=0, cattle=0, coal=0, hides=0,
                smoked_fish=0, charcoal=0, brick=0, steel=0,
-               bread=0, meal=0, coke=0, leather=0,
+               bread=0, meat=0, coke=0, leather=0,
                loan=0):
     self._resource_dict = dict()
     self._resource_dict['franc'] = Franc(franc)
@@ -26,7 +26,7 @@ class Resource(object):
     self._resource_dict['brick'] = Brick(brick)
     self._resource_dict['steel'] = Steel(steel)
     self._resource_dict['bread'] = Bread(bread)
-    self._resource_dict['meal'] = Meal(meal)
+    self._resource_dict['meat'] = Meat(meat)
     self._resource_dict['coke'] = Coke(coke)
     self._resource_dict['leather'] = Leather(leather)
     self._resource_dict['loan'] = Loan(loan)
@@ -201,11 +201,11 @@ class Cattle(BasicResourceElement):
     super(Cattle, self).__init__(number)
 
 
-class Meal(Cattle):
-  name = 'Meal'
+class Meat(Cattle):
+  name = 'Meat'
   _unit_food_value = 3
   def __init__(self, number):
-    super(Meal, self).__init__(number)
+    super(Meat, self).__init__(number)
 
 
 class Coal(BasicResourceElement):

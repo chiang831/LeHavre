@@ -173,8 +173,8 @@ class TestGetResource(unittest.TestCase):
     self._name = 'bread'
     self._TestGetResource()
 
-  def testGetMeal(self):
-    self._name = 'meal'
+  def testGetMeat(self):
+    self._name = 'meat'
     self._TestGetResource()
 
   def testGetLeather(self):
@@ -259,8 +259,8 @@ class TestClearResource(unittest.TestCase):
     self._name = 'bread'
     self._TestClearResource()
 
-  def testClearMeal(self):
-    self._name = 'meal'
+  def testClearMeat(self):
+    self._name = 'meat'
     self._TestClearResource()
 
   def testClearLeather(self):
@@ -297,8 +297,8 @@ class TestGetFoodValue(unittest.TestCase):
     res = resource.Resource(bread=1)
     self.assertEqual(res.GetFoodValue(), 2)
 
-  def testMeal(self):
-    res = resource.Resource(meal=1)
+  def testMeat(self):
+    res = resource.Resource(meat=1)
     self.assertEqual(res.GetFoodValue(), 3)
 
 
