@@ -358,6 +358,11 @@ class TestFilterResource(unittest.TestCase):
     filtered_res = resource.FilterResourceFood(res)
     self.assertTrue(filtered_res.Equal(resource.Resource(franc=1, fish=1)))
 
+  def testFilterFranc(self):
+    res = resource.Resource(franc=1, fish=1, clay=1)
+    filtered_res = resource.FilterResourceFranc(res)
+    self.assertTrue(filtered_res.Equal(resource.Resource(franc=1)))
+
 
 if __name__ == '__main__':
   unittest.main()

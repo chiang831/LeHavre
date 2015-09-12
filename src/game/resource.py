@@ -257,3 +257,7 @@ def FilterResourceFood(res):
     if not element.GetUnitFoodValue():
       element.Clear()
   return filtered_res
+
+
+def FilterResourceFranc(res):
+  return Resource(franc=res.GetResourceNumberByName('franc'))
