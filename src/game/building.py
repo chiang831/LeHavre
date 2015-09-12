@@ -6,6 +6,7 @@ class Building(object):
     self._cost = cost
     self._value = value
     self._fee = fee
+    self._worker_name = None
 
   def GetName(self):
     return self._name
@@ -18,6 +19,16 @@ class Building(object):
 
   def GetFee(self):
     return self._fee
+
+  def SetCurrentWorker(self, player_name):
+    self._worker_name = player_name
+
+  def IsOccupied(self):
+    return self._worker_name is not None
+
+  def GetCurrentWorker(self):
+    return self._worker_name
+
 
 def CreateBuilding(name, cost, value, fee):
   return Building(name, cost, value, fee)
