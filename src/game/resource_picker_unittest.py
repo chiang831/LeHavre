@@ -2,6 +2,7 @@
 
 import unittest
 
+import entry_fee
 import resource
 import resource_picker
 
@@ -62,6 +63,22 @@ class TestCreateResourcePicker(unittest.TestCase):
   def testCreateResourcePickerForFood(self):
     res = resource.Resource(franc=1, fish=1, clay=1)
     picker_obj = resource_picker.CreateResourcePickerForFood(res)
+    self.assertTrue(
+        picker_obj.GetAvailableResource().Equal(
+            resource.Resource(franc=1, fish=1)))
+
+  def testCreateResourcePickerForEntryFeeOnlyFranc(self):
+    res = resource.Resource(franc=1, fish=1, clay=1)
+    fee = entry_fee.EntryFee(franc=1, food=0)
+    picker_obj = resource_picker.CreateResourcePickerForEntryFee(res, fee)
+    self.assertTrue(
+        picker_obj.GetAvailableResource().Equal(
+            resource.Resource(franc=1)))
+
+  def testCreateResourcePickerForEntryFee(self):
+    res = resource.Resource(franc=1, fish=1, clay=1)
+    fee = entry_fee.EntryFee(franc=1, food=1)
+    picker_obj = resource_picker.CreateResourcePickerForEntryFee(res, fee)
     self.assertTrue(
         picker_obj.GetAvailableResource().Equal(
             resource.Resource(franc=1, fish=1)))

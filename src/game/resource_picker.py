@@ -53,3 +53,13 @@ def CreateResourcePickerForFood(res):
   picker = ResourcePicker()
   picker.SetAvailableResource(res_filtered)
   return picker
+
+
+def CreateResourcePickerForEntryFee(res, fee):
+  if fee.food:
+    res_filtered = resource.FilterResourceFood(res)
+  else:
+    res_filtered = resource.FilterResourceFranc(res)
+  picker = ResourcePicker()
+  picker.SetAvailableResource(res_filtered)
+  return picker
