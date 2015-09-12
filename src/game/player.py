@@ -18,6 +18,7 @@ class Player(object):
   def __init__(self, name):
     self._name = name
     self._resource = resource.Resource()
+    self._worker_place = None
 
   def GetName(self):
     return self._name
@@ -50,3 +51,9 @@ class Player(object):
     res_to_subtract = resource.Resource(
         franc=franc_to_return, loan=loan_to_return)
     self.SubtractResource(res_to_subtract)
+
+  def SetWorkerPlace(self, building_name):
+    self._worker_place = building_name
+
+  def GetWorkerPlace(self):
+    return self._worker_place

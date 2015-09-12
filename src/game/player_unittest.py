@@ -80,5 +80,15 @@ class TestGetLoan(unittest.TestCase):
             resource.Resource(franc=3, fish=1, loan=1)))
 
 
+class TestPlayerWorker(unittest.TestCase):
+  def setUp(self):
+    self._name = 'Player1'
+    self._player = player.Player(self._name)
+
+  def testWorkerPlace(self):
+    self._player.SetWorkerPlace('building1')
+    self.assertEqual(self._player.GetWorkerPlace(), 'building1')
+
+
 if __name__ == '__main__':
   unittest.main()
