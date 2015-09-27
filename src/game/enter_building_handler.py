@@ -1,6 +1,6 @@
 """Module to handle entering building"""
 
-import entry_fee_checker
+from game import entry_fee_checker
 
 class NotEnoughEntryFeeError(Exception):
   pass

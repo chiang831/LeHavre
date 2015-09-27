@@ -2,8 +2,8 @@
 
 import unittest
 
-import config
-import game_setting
+from game import config
+from game import game_setting
 
 class TestGameSetting(unittest.TestCase):
   def setUp(self):

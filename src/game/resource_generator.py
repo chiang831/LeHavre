@@ -1,8 +1,9 @@
 """This module handles resource generation in each turn."""
 
-import config
 import random
-import resource
+
+from game import config
+from game import resource
 
 # pylint: disable=R0903
 class ResourceGenerator(object):

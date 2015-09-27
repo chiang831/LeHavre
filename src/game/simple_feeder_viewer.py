@@ -1,6 +1,6 @@
 """This module provides simple viewer for feeder."""
 
-import simple_resource_picker_viewer as picker_viewer
+from game import simple_resource_picker_viewer as picker_viewer
 
 class SimpleFeederViewer(object):
   def __init__(self, feeder):

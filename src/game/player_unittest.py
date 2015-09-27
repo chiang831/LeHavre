@@ -2,8 +2,8 @@
 
 import unittest
 
-import player
-import resource
+from game import player
+from game import resource
 
 class TestPlayer(unittest.TestCase):
   def setUp(self):

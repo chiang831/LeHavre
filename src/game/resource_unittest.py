@@ -1,7 +1,8 @@
 """Unittest for resource module."""
 
-import resource
 import unittest
+
+from game import resource
 
 class TestResource(unittest.TestCase):
   def setUp(self):

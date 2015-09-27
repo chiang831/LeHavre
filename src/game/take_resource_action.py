@@ -1,6 +1,6 @@
 """This module handles user taking resource from a resource pile."""
 
-import resource
+from game import resource
 
 #pylint: disable=R0903
 

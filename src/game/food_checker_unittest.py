@@ -1,8 +1,8 @@
 """Unittest for food_checker module."""
 import unittest
 
-import food_checker
-import resource
+from game import food_checker
+from game import resource
 
 class TestFoodChecker(unittest.TestCase):
   def setUp(self):

@@ -2,8 +2,9 @@
 
 import unittest
 
-import resource
-import simple_resource_viewer
+from game import resource
+
+from game import simple_resource_viewer
 
 class TestResourceViewer(unittest.TestCase):
   def testShowResource(self):

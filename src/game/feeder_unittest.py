@@ -2,10 +2,10 @@
 
 import unittest
 
-import resource
-import resource_picker
-import feeder
-import player
+from game import resource
+from game import resource_picker
+from game import feeder
+from game import player
 
 
 class TestFeeder(unittest.TestCase):

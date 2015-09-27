@@ -2,11 +2,12 @@
 
 import unittest
 
-import player
-import simple_flow_viewer
-import game_flow
-import game_setting
-import resource_generator
+from game import player
+from game import game_flow
+from game import game_setting
+from game import resource_generator
+
+from game import simple_flow_viewer
 
 class TestFlowViewer(unittest.TestCase):
   def setUp(self):

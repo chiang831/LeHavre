@@ -1,6 +1,6 @@
 """This module handles picking resource from available resource."""
 
-import resource
+from game import resource
 
 class ResourcePickerError(Exception):
   pass

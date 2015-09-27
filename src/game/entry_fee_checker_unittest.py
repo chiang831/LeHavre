@@ -2,10 +2,10 @@
 
 import unittest
 
-import entry_fee
-import entry_fee_checker
-import food_checker
-import resource
+from game import entry_fee
+from game import entry_fee_checker
+from game import food_checker
+from game import resource
 
 class TestEntryFeeChecker(unittest.TestCase):
   def setUp(self):

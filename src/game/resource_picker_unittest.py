@@ -2,9 +2,9 @@
 
 import unittest
 
-import entry_fee
-import resource
-import resource_picker
+from game import entry_fee
+from game import resource
+from game import resource_picker
 
 class TestResourcePicker(unittest.TestCase):
   def setUp(self):

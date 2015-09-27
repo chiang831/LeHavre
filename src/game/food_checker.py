@@ -1,6 +1,6 @@
 """This module handles checking if resource meets food requirement."""
 
-import resource
+from game import resource
 
 class FoodCheckerError(Exception):
   pass

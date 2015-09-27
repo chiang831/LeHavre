@@ -2,9 +2,9 @@
 
 import unittest
 
-import config
-import resource
-import resource_generator
+from game import config
+from game import resource
+from game import resource_generator
 
 class TestResourceGenerator(unittest.TestCase):
   def setUp(self):

@@ -2,9 +2,9 @@
 
 import unittest
 
-import take_resource_action
-import resource
-import player
+from game import take_resource_action
+from game import resource
+from game import player
 
 class TestTakeResourceAction(unittest.TestCase):
   def setUp(self):

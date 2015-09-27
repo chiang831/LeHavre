@@ -2,11 +2,11 @@
 
 import unittest
 
-import feeder
-import feeding_handler
-import player
-import resource
-import resource_picker
+from game import feeder
+from game import feeding_handler
+from game import player
+from game import resource
+from game import resource_picker
 
 class TestFeedingHandler(unittest.TestCase):
   def setUp(self):

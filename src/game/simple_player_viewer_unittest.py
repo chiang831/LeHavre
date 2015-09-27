@@ -2,10 +2,11 @@
 
 import unittest
 
-import player
-import resource
-import simple_player_viewer
-import simple_resource_viewer
+from game import player
+from game import resource
+
+from game import simple_player_viewer
+from game import simple_resource_viewer
 
 class TestPlayerViewer(unittest.TestCase):
   def setUp(self):

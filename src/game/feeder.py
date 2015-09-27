@@ -1,7 +1,7 @@
 """This module handles feeding food to worker in the end of a round."""
 
-import food_checker
-import resource
+from game import food_checker
+from game import resource
 
 
 class FeederError(Exception):

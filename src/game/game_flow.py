@@ -1,10 +1,10 @@
 """This module handles the game flow."""
 
-import feeder
-import feeding_handler
-import take_resource_action
-import resource
-import resource_picker
+from game import feeder
+from game import feeding_handler
+from game import take_resource_action
+from game import resource
+from game import resource_picker
 
 class GameState(object):
   PENDING_ADD_PLAYERS = 'State: Pending adding players'

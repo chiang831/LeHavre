@@ -2,7 +2,7 @@
 
 import unittest
 
-import entry_fee
+from game import entry_fee
 
 class TestEntryFee(unittest.TestCase):
   def testEntryFee(self):

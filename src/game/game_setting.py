@@ -1,6 +1,6 @@
 """This module handles game setting for different number of players."""
 
-import config
+from game import config
 
 class GameSetting(object):
   """Provide game setting for different number of players."""

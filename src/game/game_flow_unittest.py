@@ -2,12 +2,12 @@
 
 import unittest
 
-import config
-import game_flow
-import game_setting
-import resource
-import resource_generator
-import player
+from game import config
+from game import game_flow
+from game import game_setting
+from game import resource
+from game import resource_generator
+from game import player
 
 class TestGameFlow(unittest.TestCase):
   def setUp(self):

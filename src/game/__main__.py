@@ -1,3 +1,3 @@
-import interact
+from game import interact
 
 interact.Run()

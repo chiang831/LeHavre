@@ -1,7 +1,7 @@
 """Module for checking entry fee."""
 
-import food_checker
-import resource
+from game import food_checker
+from game import resource
 
 class TooMuchError(Exception):
   pass
