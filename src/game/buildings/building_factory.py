@@ -16,7 +16,12 @@ def _GetModuleName(building_name):
 def CreateBuildingByName(building_name):
   module_name = _GetModuleName(building_name)
   file_path = os.path.join('game', 'buildings', module_name + '.py')
-  module = imp.load_source(building_name, file_path)
+  try:
+    module = imp.load_source(building_name, file_path)
+  except IOError:
+    raise CreateBuildingError(
+        'Can not find module %s at %s' % (building_name, file_path))
+          
   if not hasattr(module, building_name):
     raise CreateBuildingError('Can not find building class %s' % building_name)
   building_type = getattr(module, building_name)
