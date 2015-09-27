@@ -93,10 +93,11 @@ class InteractShell(object):
     self.ShowPlayers()
 
 
-# pylint: disable=C0103
-readline.parse_and_bind("tab: complete")
-p = InteractShell()
-variables = globals().copy()
-variables.update(locals())
-shell = code.InteractiveConsole(variables)
-shell.interact()
+def Run():
+  # pylint: disable=C0103
+  readline.parse_and_bind("tab: complete")
+  p = InteractShell()
+  variables = globals().copy()
+  variables.update(locals())
+  shell = code.InteractiveConsole(variables)
+  shell.interact()
