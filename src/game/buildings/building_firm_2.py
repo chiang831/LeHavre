@@ -10,9 +10,9 @@ class BuildingFirm2(building.Building):
   _VALUE = 6
   _FEE = entry_fee.EntryFee(franc=0, food=1)
 
-  def __init__():
+  def __init__(self):
     super(BuildingFirm1, self).__init__(
-        name=_NAME,
-        cost=_COST,
-        value=_VALUE,
-        fee=_FEE)
+        name=self._NAME,
+        cost=self._COST,
+        value=self._VALUE,
+        fee=self._FEE)
