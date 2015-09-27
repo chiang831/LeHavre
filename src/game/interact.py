@@ -97,6 +97,8 @@ class InteractShell(object):
 def Run():
   # pylint: disable=C0103
   p = InteractShell()
+  p.StartGame(['Jimmy', 'Jennifer'])
+  p.ShowAll()
   variables = globals().copy()
   variables.update(locals())
   readline.set_completer(rlcompleter.Completer(variables).complete)
