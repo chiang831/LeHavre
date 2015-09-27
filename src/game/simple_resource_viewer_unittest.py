@@ -4,7 +4,7 @@ import unittest
 
 from game import resource
 
-from game import simple_resource_viewer
+from game.viewer import simple_resource_viewer
 
 class TestResourceViewer(unittest.TestCase):
   def testShowResource(self):

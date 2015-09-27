@@ -7,8 +7,8 @@ from game import player
 from game import resource
 from game import resource_picker
 
-from game import simple_feeder_viewer
-from game import simple_resource_picker_viewer
+from game.viewer import simple_feeder_viewer
+from game.viewer import simple_resource_picker_viewer
 
 class TestFeederViewer(unittest.TestCase):
   def setUp(self):

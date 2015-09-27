@@ -1,6 +1,6 @@
 """This module provides simple viewer for player."""
 
-from game import simple_resource_viewer as resource_viewer
+from game.viewer import simple_resource_viewer as resource_viewer
 
 class SimplePlayerViewer(object):
   def __init__(self, player):

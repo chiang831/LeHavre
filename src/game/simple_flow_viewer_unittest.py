@@ -7,7 +7,7 @@ from game import game_flow
 from game import game_setting
 from game import resource_generator
 
-from game import simple_flow_viewer
+from game.viewer import simple_flow_viewer
 
 class TestFlowViewer(unittest.TestCase):
   def setUp(self):

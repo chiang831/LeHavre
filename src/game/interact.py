@@ -8,11 +8,11 @@ from game import game_setting
 from game import game_flow
 from game import resource_generator
 
-from game import simple_resource_viewer
-from game import simple_player_viewer
-from game import simple_feeder_viewer
-from game import simple_resource_generator_viewer
-from game import simple_flow_viewer
+from game.viewer import simple_resource_viewer
+from game.viewer import simple_player_viewer
+from game.viewer import simple_feeder_viewer
+from game.viewer import simple_resource_generator_viewer
+from game.viewer import simple_flow_viewer
 
 #TODO: Add unittest for this module.
 

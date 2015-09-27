@@ -5,7 +5,7 @@ import unittest
 from game import resource
 from game import resource_picker
 
-from game import simple_resource_picker_viewer
+from game.viewer import simple_resource_picker_viewer
 
 class TestSimpleViewernittest(unittest.TestCase):
   def setUp(self):

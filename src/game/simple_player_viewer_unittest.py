@@ -5,8 +5,8 @@ import unittest
 from game import player
 from game import resource
 
-from game import simple_player_viewer
-from game import simple_resource_viewer
+from game.viewer import simple_player_viewer
+from game.viewer import simple_resource_viewer
 
 class TestPlayerViewer(unittest.TestCase):
   def setUp(self):
