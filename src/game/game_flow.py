@@ -5,6 +5,7 @@ from game import feeding_handler
 from game import take_resource_action
 from game import resource
 from game import resource_picker
+from game.buildings import building_factory
 
 class GameState(object):
   PENDING_ADD_PLAYERS = 'State: Pending adding players'
@@ -37,6 +38,7 @@ class GameFlow(object):
     self._resource_pile = resource.CreateResourceFromDict(
         setting.GetStartResourcesPilesDict())
     self._players = list()
+    self._public_buildings = dict()
     self._resource_generators = list()
     self._turn_index = None
     self._current_player_index = None
@@ -61,6 +63,7 @@ class GameFlow(object):
   @CheckState(GameState.PENDING_START_GAME)
   def StartGame(self):
     self._StartingOffer()
+    self._StartingBuildings()
     self._current_player_index = 0
     self._turn_index = 0
     self._round_index = 0
@@ -83,6 +86,14 @@ class GameFlow(object):
     starting_offer = resource.CreateResourceFromDict(starting_offer_dict)
     for player_foo in self._players:
       player_foo.AddResource(starting_offer)
+
+  def _StartingBuildings(self):
+    for building_name in self._setting.GetStartingBuildings():
+      building_obj = building_factory.CreateBuildingByName(building_name)
+      self._public_buildings[building_name] = building_obj
+
+  def GetPublicBuildings(self):
+    return self._public_buildings
 
   @CheckState(GameState.PENDING_SET_RESOURCE_GENERATORS)
   def SetResourceGenerators(self, res_gen_list):

@@ -60,6 +60,21 @@ class TestGameFlow(unittest.TestCase):
     self.assertTrue(player1.GetResource().Equal(expected_resource))
     self.assertTrue(player2.GetResource().Equal(expected_resource))
 
+  def testGameStartingBuilding(self):
+    self._number_of_players = 2
+    self._CreateGameFlow()
+    self._CreateAndSetPlayers()
+    player1 = self._players[0]
+    player2 = self._players[1]
+    self._SetGenerator()
+    self._StartGame()
+    public_buildings = self._flow.GetPublicBuildings()
+    building_names = config.STARTING_BUILDINGS
+    for building_name in building_names:
+      self.assertEqual(
+          public_buildings[building_name].GetName(),
+          building_name)
+
   @classmethod
   def _GetResourceGenerators(cls, res_list):
     res_generator_list = list()

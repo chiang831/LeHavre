@@ -21,3 +21,7 @@ class GameSetting(object):
   @classmethod
   def GetNumberOfTurns(cls):
     return config.NUMBER_OF_TURNS
+
+  def GetStartingBuildings(self):
+    return config.STARTING_BUILDINGS
+

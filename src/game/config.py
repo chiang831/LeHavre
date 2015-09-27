@@ -110,3 +110,9 @@ END_OF_ROUND_DICT = {
         EndOfRound(food=6),
     ],
 }
+
+STARTING_BUILDINGS = [
+    'BuildingFirm1',
+    'BuildingFirm2',
+    'ConstructionFirm',
+]
