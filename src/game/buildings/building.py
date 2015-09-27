@@ -32,7 +32,3 @@ class Building(object):
 
   def GetCurrentWorker(self):
     return self._worker_name
-
-
-def CreateBuilding(name, cost, value, fee):
-  return Building(name, cost, value, fee)

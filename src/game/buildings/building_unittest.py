@@ -19,8 +19,8 @@ class TestBuilding(unittest.TestCase):
     self._value = 10
     self._name = 'building1'
     self._fee = entry_fee.EntryFee(franc=1, food=1)
-    self._building_obj = building.CreateBuilding(
     self._instruction = 'Instruciton'
+    self._building_obj = building.Building(
         name=self._name,
         cost=self._res,
         value=self._value,

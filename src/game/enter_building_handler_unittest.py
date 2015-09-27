@@ -17,7 +17,7 @@ class TestEnterBuildingHandler(unittest.TestCase):
     self._handler = None
 
   def _CreateBuilding(self):
-    self._building = building.CreateBuilding(
+    self._building = building.Building(
         'building1', resource.Resource(wood=1, clay=1),
         10, self._fee)
 
