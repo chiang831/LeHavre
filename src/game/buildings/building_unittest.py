@@ -2,9 +2,9 @@
 
 import unittest
 
-from game import building
 from game import resource
 from game import entry_fee
+from game.buildings import building
 
 class TestBuilding(unittest.TestCase):
   def setUp(self):

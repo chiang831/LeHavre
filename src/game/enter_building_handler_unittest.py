@@ -1,12 +1,12 @@
 """Unittest for enter_building_handler."""
 import unittest
 
-from game import building
 from game import enter_building_handler
 from game import entry_fee
 from game import player
 from game import resource
 from game import resource_picker
+from game.buildings import building
 
 class TestEnterBuildingHandler(unittest.TestCase):
   def setUp(self):
