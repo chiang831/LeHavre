@@ -1,11 +1,12 @@
 """This module provide the building base class."""
 
 class Building(object):
-  def __init__(self, name, cost, value, fee):
+  def __init__(self, name, cost, value, fee, instruction=None):
     self._name = name
     self._cost = cost
     self._value = value
     self._fee = fee
+    self._instruction = instruction
     self._worker_name = None
 
   def GetName(self):
@@ -19,6 +20,9 @@ class Building(object):
 
   def GetFee(self):
     return self._fee
+
+  def GetInstruction(self):
+    return self._instruction
 
   def SetCurrentWorker(self, player_name):
     self._worker_name = player_name

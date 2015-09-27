@@ -20,10 +20,12 @@ class TestBuilding(unittest.TestCase):
     self._name = 'building1'
     self._fee = entry_fee.EntryFee(franc=1, food=1)
     self._building_obj = building.CreateBuilding(
+    self._instruction = 'Instruciton'
         name=self._name,
         cost=self._res,
         value=self._value,
-        fee=self._fee)
+        fee=self._fee,
+        instruction=self._instruction)
 
   def testCreateBuilding(self):
     self._CreateBuilding()
@@ -31,6 +33,7 @@ class TestBuilding(unittest.TestCase):
     self.assertEqual(self._value, self._building_obj.GetValue())
     self.assertEqual(self._name, self._building_obj.GetName())
     self.assertEqual(self._fee, self._building_obj.GetFee())
+    self.assertEqual(self._instruction, self._building_obj.GetInstruction())
 
   def testIsOccupied(self):
     self._CreateBuilding()
