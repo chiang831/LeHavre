@@ -8,16 +8,22 @@ class SimpleBuildingViewer(object):
 
   def Show(self):
     output = ''
-    output += 'Building: %s\n' % self._building.GetName()
+    output += 'Name: %s\n' % self._building.GetName()
     output += 'Cost: %s\n' % resource_viewer.ShowResource(
         self._building.GetCost())
     output += 'Value: %s\n' % self._building.GetValue()
-    fee = self._building.GetFee()
-    output += 'Fee: food=%s, franc=%s\n' % (fee.food, fee.franc)
+    output += _ShowEntryFee(self._building.GetFee())
     output += 'Instruction: %s\n' % self._building.GetInstruction()
 
     return output
 
-def ShowPlayer(player_obj):
-  viewer = SimplePlayerViewer(player_obj)
-  return viewer.Show()
+def _ShowEntryFee(fee):
+  output = 'Fee: '
+  if fee.food and fee.franc:
+    output += '%d food, %d franc' % (fee.food, fee.franc)
+  elif fee.food:
+    output += '%d food' % fee.food
+  elif fee.franc:
+    output += '%d franc' % fee.franc
+  output += '\n'
+  return output
