@@ -72,7 +72,7 @@ class TestGameFlow(unittest.TestCase):
     building_names = config.STARTING_BUILDINGS
     for building_name in building_names:
       self.assertEqual(
-          public_buildings[building_name].GetName(),
+          type(public_buildings[building_name]).__name__,
           building_name)
 
   @classmethod

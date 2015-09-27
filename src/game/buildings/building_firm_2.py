@@ -5,8 +5,8 @@ from game import resource
 from game.buildings import building
 
 class BuildingFirm2(building.Building):
-  _NAME = 'BuildingFirm2'
-  _COST = None
+  _NAME = 'Building Firm 2'
+  _COST = resource.Resource()
   _VALUE = 6
   _FEE = entry_fee.EntryFee(franc=0, food=1)
   _INSTRUCTION = 'Build 1 building.'

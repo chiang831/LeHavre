@@ -8,7 +8,7 @@ class TestBuidlingFactory(unittest.TestCase):
   def testBuilding(self):
     name = 'BuildingFirm1'
     building_obj = building_factory.CreateBuildingByName(name)
-    self.assertEqual(building_obj.GetName(), name)
+    self.assertEqual(building_obj.GetName(), 'Building Firm 1')
 
   def testBuildingError(self):
     name = 'BuidlingFirm3'
