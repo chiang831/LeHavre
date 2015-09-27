@@ -8,11 +8,12 @@ from game import game_setting
 from game import game_flow
 from game import resource_generator
 
-from game.viewer import simple_resource_viewer
-from game.viewer import simple_player_viewer
+from game.viewer import simple_building_viewer
 from game.viewer import simple_feeder_viewer
-from game.viewer import simple_resource_generator_viewer
 from game.viewer import simple_flow_viewer
+from game.viewer import simple_player_viewer
+from game.viewer import simple_resource_generator_viewer
+from game.viewer import simple_resource_viewer
 
 #TODO: Add unittest for this module.
 
@@ -87,10 +88,17 @@ class InteractShell(object):
         SimpleResourceGeneratorsViewer(self._flow.GetResourceGenerators())
     print generator_viewer.Show()
 
+  def ShowPublicBuildings(self):
+    print 'Public buildings: \n'
+    for name, building in self._flow.GetPublicBuildings().iteritems():
+      print '[%s]: ' % name
+      print simple_building_viewer.SimpleBuildingViewer(building).Show()
+
   def ShowAll(self):
     self.ShowFlow()
     self.ShowGenerators()
     self.ShowResourcePile()
+    self.ShowPublicBuildings()
     self.ShowPlayers()
 
 
