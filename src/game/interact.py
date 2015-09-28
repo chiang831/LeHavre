@@ -62,6 +62,15 @@ class InteractShell(object):
   def PlayerTakeResourceAction(self, resource_name):
     self._flow.PlayerTakeResourceAction(resource_name)
 
+  def PlayerEnterBuildingAction(self, building_key):
+    self._flow.PlayerEnterBuildingAction(building_key)
+
+  def GetEntryFeePicker(self):
+    return self._flow.GetEnterBuildingHandler().GetPicker()
+
+  def PlayerPayEntryFee(self):
+    self._flow.PayEntryFee()
+
   def PlayerDone(self):
     self._flow.NextTurn()
 
@@ -69,7 +78,7 @@ class InteractShell(object):
     feeder = self._flow.GetFeederForPlayer(player_name)
     print simple_feeder_viewer.ShowFeeder(feeder)
 
-  def GetPickerForPlayer(self, player_name):
+  def GetFeederPickerForPlayer(self, player_name):
     feeder = self._flow.GetFeederForPlayer(player_name)
     return feeder.GetResourcePicker()
 
