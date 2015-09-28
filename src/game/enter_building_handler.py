@@ -58,3 +58,6 @@ class EnterBuildingHandler(object):
   def _OccupyBuilding(self):
     self._player.SetWorkerPlace(self._building.GetName())
     self._building.SetCurrentWorker(self._player.GetName())
+
+  def GetPicker(self):
+    return self._picker

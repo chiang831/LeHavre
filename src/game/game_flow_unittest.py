@@ -302,6 +302,30 @@ class TestGameFlow(unittest.TestCase):
       self._flow.PlayerTakeDummyActionForTest()
       self._flow.NextTurn()
 
+  def testEnterBuildingFirm1(self):
+    self._number_of_players = 1
+    self._CreateGameFlow()
+    self._CreateAndSetPlayers()
+    player1 = self._players[0]
+    self._SetGenerator()
+    self._StartGame()
+    self._flow.PlayerEnterBuildingAction('BuildingFirm1')
+    self.assertEqual(player1.GetWorkerPlace(), 'Building Firm 1')
+
+  def testEnterBuildingFirm2(self):
+    self._number_of_players = 1
+    self._CreateGameFlow()
+    self._CreateAndSetPlayers()
+    player1 = self._players[0]
+    self._SetGenerator()
+    self._StartGame()
+    player1.AddResource(resource.Resource(fish=1))
+    self._flow.PlayerEnterBuildingAction('BuildingFirm2')
+    picker_obj = self._flow.GetEnterBuildingHandler().GetPicker()
+    picker_obj.Pick(fish=1)
+    self._flow.PayEntryFee()
+    self.assertEqual(player1.GetWorkerPlace(), 'Building Firm 2')
+
 
 if __name__ == '__main__':
   unittest.main()

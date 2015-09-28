@@ -1,5 +1,6 @@
 """This module handles the game flow."""
 
+from game import enter_building_handler
 from game import feeder
 from game import feeding_handler
 from game import take_resource_action
@@ -12,6 +13,7 @@ class GameState(object):
   PENDING_SET_RESOURCE_GENERATORS = 'State: Pending setting resource generators'
   PENDING_START_GAME = 'State: Pending start game'
   PENDING_USER_ACTION = 'State: Pending user action'
+  PENDING_USER_FEE = 'State: Pending user paying entry fee'
   PENDING_USER_DONE = 'State: Pending user done'
   PENDING_FEEDING = 'State: Pending feeding'
   PENDING_START_NEXT_ROUND = 'State: Pending start of next round'
@@ -42,6 +44,7 @@ class GameFlow(object):
     self._resource_generators = list()
     self._turn_index = None
     self._current_player_index = None
+    self._enter_building_handler = None
     self._round_index = None
     self._feeding_handler = None
     self._state = GameState.PENDING_ADD_PLAYERS
@@ -163,6 +166,35 @@ class GameFlow(object):
 
   @CheckState(GameState.PENDING_USER_ACTION)
   def PlayerTakeDummyActionForTest(self):
+    self._state = GameState.PENDING_USER_DONE
+
+  @CheckState(GameState.PENDING_USER_ACTION)
+  def PlayerEnterBuildingAction(self, building_key):
+    player_obj = self.GetCurrentPlayer()
+    building_obj = self._public_buildings[building_key]
+    fee = building_obj.GetFee()
+    picker_obj = resource_picker.CreateResourcePickerForEntryFee(
+        player_obj.GetResource(), fee)
+    self._enter_building_handler = enter_building_handler.EnterBuildingHandler(
+        building_obj=building_obj,
+        player_obj=player_obj,
+        picker_obj=picker_obj,
+        )
+
+    self._state = GameState.PENDING_USER_FEE
+    if fee.franc or fee.food:
+      return
+    else:
+    # Pay nothing and enter this building.
+      self.PayEntryFee()
+
+  @CheckState(GameState.PENDING_USER_FEE)
+  def GetEnterBuildingHandler(self):
+    return self._enter_building_handler
+
+  @CheckState(GameState.PENDING_USER_FEE)
+  def PayEntryFee(self):
+    self._enter_building_handler.EnterBuilding() 
     self._state = GameState.PENDING_USER_DONE
 
   def GetCurrentPlayer(self):
