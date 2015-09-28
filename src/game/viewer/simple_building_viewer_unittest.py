@@ -16,10 +16,13 @@ class TestBuildingViewer(unittest.TestCase):
     self._value = 10
     self._instruction = 'instruction'
     self._expected_output = None
+    self._current_worker = None
 
   def _CreateTestBuilding(self):
     self._building = building.Building(
         self._name, self._cost, self._value, self._fee, self._instruction)
+    if self._current_worker:
+      self._building.SetCurrentWorker(self._current_worker)
 
   def _SetExpectedOutput(self):
     self._expected_output = 'Name: %s\n' % self._name
@@ -29,6 +32,8 @@ class TestBuildingViewer(unittest.TestCase):
     self._expected_output += 'Value: %s\n' % self._value
     self._expected_output += self._ExpectedFeeOutput()
     self._expected_output += 'Instruction: %s\n' % self._instruction
+    if self._current_worker:
+      self._expected_output += 'Occupied by: %s\n' % self._current_worker
 
   def _ExpectedFeeOutput(self):
     output = 'Fee: '
@@ -64,6 +69,16 @@ class TestBuildingViewer(unittest.TestCase):
     building_viewer = simple_building_viewer.SimpleBuildingViewer(
         self._building)
     self.assertEqual(self._expected_output, building_viewer.Show())
+
+  def testBuildingViewerOccupied(self):
+    self._fee = entry_fee.EntryFee(food=1, franc=1)
+    self._current_worker = 'player1'
+    self._CreateTestBuilding()
+    self._SetExpectedOutput()
+    building_viewer = simple_building_viewer.SimpleBuildingViewer(
+        self._building)
+    self.assertEqual(self._expected_output, building_viewer.Show())
+
 
 if __name__ == '__main__':
   unittest.main()

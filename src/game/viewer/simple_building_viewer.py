@@ -14,6 +14,8 @@ class SimpleBuildingViewer(object):
     output += 'Value: %s\n' % self._building.GetValue()
     output += _ShowEntryFee(self._building.GetFee())
     output += 'Instruction: %s\n' % self._building.GetInstruction()
+    if self._building.IsOccupied():
+      output += 'Occupied by: %s\n' % self._building.GetCurrentWorker()
 
     return output
 
