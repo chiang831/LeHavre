@@ -57,6 +57,15 @@ class TestEnterBuildingHandler(unittest.TestCase):
     with self.assertRaises(enter_building_handler.NotEnoughEntryFeeError):
       self._CreateHandler()
 
+  def testOccupied(self):
+    self._fee = entry_fee.EntryFee(franc=0, food=0)
+    self._CreateBuilding()
+    self._building.SetCurrentWorker('some player name')
+    self._CreatePlayer()
+    self._CreatePicker()
+    with self.assertRaises(enter_building_handler.AlreadyOccupiedError):
+      self._CreateHandler()
+
   def testNotPickedEnough(self):
     self._fee = entry_fee.EntryFee(franc=0, food=2)
     self._CreateBuilding()

@@ -2,6 +2,9 @@
 
 from game import entry_fee_checker
 
+class AlreadyOccupiedError(Exception):
+  pass
+
 class NotEnoughEntryFeeError(Exception):
   pass
 
@@ -17,6 +20,9 @@ class EnterBuildingHandler(object):
     self._picked_res = None
     self._CreateChecker()
     self._CheckCanEnter()
+    if building_obj.IsOccupied():
+      raise AlreadyOccupiedError(
+          'Building %s is occupied' % self._building.GetName())
 
   def _CreateChecker(self):
     self._checker = entry_fee_checker.EntryFeeChecker(self._building.GetFee())
