@@ -23,7 +23,7 @@ class TestEnterBuildingHandler(unittest.TestCase):
 
   def _CreatePlayer(self):
     self._player = player.Player('Player1')
-    self._player.AddResource(resource.Resource(fish=2))
+    self._player.AddResource(resource.Resource(fish=2, wood=1))
 
   def _CreatePicker(self):
     self._picker = resource_picker.CreateResourcePickerForEntryFee(
@@ -45,7 +45,8 @@ class TestEnterBuildingHandler(unittest.TestCase):
     self._picker.Pick(fish=1)
     self._handler.EnterBuilding()
     self.assertEqual(self._player.GetWorkerPlace(), self._building.GetName())
-    self.assertTrue(self._player.GetResource().Equal(resource.Resource(fish=1)))
+    self.assertTrue(
+        self._player.GetResource().Equal(resource.Resource(fish=1, wood=1)))
     self.assertTrue(self._building.IsOccupied())
     self.assertEqual(self._building.GetCurrentWorker(), self._player.GetName())
 
@@ -56,6 +57,13 @@ class TestEnterBuildingHandler(unittest.TestCase):
     self._CreatePicker()
     with self.assertRaises(enter_building_handler.NotEnoughEntryFeeError):
       self._CreateHandler()
+
+  def testCanEnter(self):
+    self._fee = entry_fee.EntryFee(franc=0, food=2)
+    self._CreateBuilding()
+    self._CreatePlayer()
+    self._CreatePicker()
+    self._CreateHandler()
 
   def testOccupied(self):
     self._fee = entry_fee.EntryFee(franc=0, food=0)

@@ -1,6 +1,7 @@
 """Module to handle entering building"""
 
 from game import entry_fee_checker
+from game import resource
 
 class AlreadyOccupiedError(Exception):
   pass
@@ -28,7 +29,7 @@ class EnterBuildingHandler(object):
     self._checker = entry_fee_checker.EntryFeeChecker(self._building.GetFee())
 
   def _CheckCanEnter(self):
-    all_picked_res = self._player.GetResource().Copy()
+    all_picked_res = resource.FilterResourceFood(self._player.GetResource())
     can_enter = False
     try:
       can_enter = self._checker.Check(all_picked_res)
