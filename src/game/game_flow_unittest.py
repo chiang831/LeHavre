@@ -71,9 +71,7 @@ class TestGameFlow(unittest.TestCase):
     public_buildings = self._flow.GetPublicBuildings()
     building_names = config.STARTING_BUILDINGS
     for building_name in building_names:
-      self.assertEqual(
-          type(public_buildings[building_name]).__name__,
-          building_name)
+      self.assertEqual(public_buildings[building_name].GetName(), building_name)
 
   @classmethod
   def _GetResourceGenerators(cls, res_list):
@@ -309,7 +307,7 @@ class TestGameFlow(unittest.TestCase):
     player1 = self._players[0]
     self._SetGenerator()
     self._StartGame()
-    self._flow.PlayerEnterBuildingAction('BuildingFirm1')
+    self._flow.PlayerEnterBuildingAction('Building Firm 1')
     self.assertEqual(player1.GetWorkerPlace(), 'Building Firm 1')
 
   def testEnterBuildingFirm2(self):
@@ -320,7 +318,7 @@ class TestGameFlow(unittest.TestCase):
     self._SetGenerator()
     self._StartGame()
     player1.AddResource(resource.Resource(fish=1))
-    self._flow.PlayerEnterBuildingAction('BuildingFirm2')
+    self._flow.PlayerEnterBuildingAction('Building Firm 2')
     picker_obj = self._flow.GetEnterBuildingHandler().GetPicker()
     picker_obj.Pick(fish=1)
     self._flow.PayEntryFee()

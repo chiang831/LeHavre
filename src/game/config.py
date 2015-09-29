@@ -112,7 +112,7 @@ END_OF_ROUND_DICT = {
 }
 
 STARTING_BUILDINGS = [
-    'BuildingFirm1',
-    'BuildingFirm2',
-    'ConstructionFirm',
+    'Building Firm 1',
+    'Building Firm 2',
+    'Construction Firm',
 ]
